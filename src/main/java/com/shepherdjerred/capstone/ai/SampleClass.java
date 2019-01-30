@@ -1,5 +1,5 @@
 package com.shepherdjerred.capstone.ai;
 
-public class Evaluator {
+public class SampleClass {
 
 }

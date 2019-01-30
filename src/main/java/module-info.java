@@ -1,2 +1,2 @@
-module com.shepherdjererd.ai {
+module com.shepherdjererd.capstone.ai {
 }
