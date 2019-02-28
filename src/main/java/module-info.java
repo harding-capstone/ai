@@ -5,4 +5,5 @@ module com.shepherdjererd.capstone.ai {
   requires ai.algorithms;
   exports com.shepherdjerred.capstone.ai;
   exports com.shepherdjerred.capstone.ai.ab;
+  exports com.shepherdjerred.capstone.ai.ab.evaluator;
 }
