@@ -86,5 +86,10 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.github.bentorfs</groupId>
+      <artifactId>ai-algorithms</artifactId>
+      <version>0.2.0</version>
+    </dependency>
   </dependencies>
 </project>

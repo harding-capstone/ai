@@ -1,9 +1,5 @@
 package com.shepherdjerred.capstone.ai;
 
-<<<<<<< Updated upstream
-public class SampleTest {
-
-=======
 import com.shepherdjerred.capstone.ai.ab.AlphaBetaQuoridorAi;
 import com.shepherdjerred.capstone.ai.ab.evaluator.DefaultMatchEvaluator;
 import com.shepherdjerred.capstone.ai.ab.evaluator.RandomMatchEvaluator;
@@ -44,30 +40,29 @@ public class SampleTest {
     var board = Board.createBoard(boardLayout, pieceBoardLocations);
     var initialMatchState = Match.startNewMatch(matchSettings, board);
 
-    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator());
-    var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator());
+    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 5);
+    var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator(), 5);
     var currentMatchState = initialMatchState;
 
     var matchFormatter = new MatchFormatter();
     matchFormatter.matchToString(initialMatchState);
 
-    int i = 0;
+    int currentTurn = 0;
     while (currentMatchState.getMatchStatus().getStatus() == Status.IN_PROGRESS) {
       Turn aiTurn;
       if (currentMatchState.getActivePlayerId() == PlayerId.ONE) {
-         aiTurn = alphaBetaAi.calculateBestTurn(currentMatchState);
+        aiTurn = alphaBetaAi.calculateBestTurn(currentMatchState);
       } else {
         aiTurn = randomAi.calculateBestTurn(currentMatchState);
       }
 
+//      System.out.println(currentMatchState.getMatchStatus().getStatus());
       currentMatchState = currentMatchState.doTurn(aiTurn, enactor);
-      System.out.println(aiTurn);
-      System.out.println(matchFormatter.matchToString(currentMatchState));
-      System.out.println(i + "\n\n\n");
-      i++;
+//      System.out.println(aiTurn);
+//      System.out.println(matchFormatter.matchToString(currentMatchState));
+      System.out.println(currentTurn);
+      currentTurn++;
     }
 
   }
-
->>>>>>> Stashed changes
 }
