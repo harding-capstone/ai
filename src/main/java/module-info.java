@@ -1,4 +1,4 @@
-module com.shepherdjererd.capstone.ai {
+module com.shepherdjerred.capstone.ai {
   requires static lombok;
   requires com.shepherdjerred.capstone.logic;
   requires org.apache.logging.log4j;
