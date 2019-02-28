@@ -40,8 +40,8 @@ public class SampleTest {
     var board = Board.createBoard(boardLayout, pieceBoardLocations);
     var initialMatchState = Match.startNewMatch(matchSettings, board);
 
-    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 5);
-    var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator(), 5);
+    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 2);
+    var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator(), 2);
     var currentMatchState = initialMatchState;
 
     var matchFormatter = new MatchFormatter();
