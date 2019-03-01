@@ -2,15 +2,16 @@ package com.shepherdjerred.capstone.ai.evaluator;
 
 import com.shepherdjerred.capstone.ai.evaluator.rules.DefeatEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.EvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentBlindDistanceEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentsShortestPathEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentJumpPotentialEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rules.OptimizingPlayerActualDistanceEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OptimizingPlayerShortestPathEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.OptimizingPlayerJumpPotentialEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.RemainingWallsEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.VictoryEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.WallsNearbyEnemyEvaluatorRule;
-import com.shepherdjerred.capstone.ai.search.astar.AStarBoardSearch;
+import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
+import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +24,10 @@ public class DefaultMatchEvaluator implements MatchEvaluator {
   @Override
   public double evaluateMatch(Match match, PlayerId playerToOptimize) {
     Map<EvaluatorRule, Double> evaluators = new HashMap<>();
-//    rules.put(new OptimizingPlayerBlindDistanceEvaluatorRule(), 1.0);
-    evaluators.put(new OptimizingPlayerActualDistanceEvaluatorRule(new AStarBoardSearch()), 3.0);
+    evaluators.put(new OptimizingPlayerShortestPathEvaluatorRule(new AStarBoardSearch(), new PlayerGoals()), 3.0);
     evaluators.put(new DefeatEvaluatorRule(), 1.0);
-    evaluators.put(new OptimizingPlayerActualDistanceEvaluatorRule(new AStarBoardSearch()), 1.0);
     evaluators.put(new OpponentJumpPotentialEvaluatorRule(), 1.0);
-    evaluators.put(new OpponentBlindDistanceEvaluatorRule(), 1.0);
+    evaluators.put(new OpponentsShortestPathEvaluatorRule(new AStarBoardSearch(), new PlayerGoals()), 1.0);
     evaluators.put(new RemainingWallsEvaluatorRule(), 1.0);
     evaluators.put(new VictoryEvaluatorRule(), 1.0);
     evaluators.put(new WallsNearbyEnemyEvaluatorRule(), 1.0);
@@ -39,13 +38,13 @@ public class DefaultMatchEvaluator implements MatchEvaluator {
           var evaluator = entry.getKey();
           var weight = entry.getValue();
           var rawScore = evaluator.evaluate(match, playerToOptimize);
-//          log.info(evaluator + ": " + rawScore);
+          log.debug(evaluator + ": " + rawScore);
           return rawScore * weight;
         })
         .mapToDouble(Double::doubleValue)
         .sum();
 
-//    log.info("Match score: " + matchScore);
+    log.debug("Match score: " + matchScore);
     return matchScore;
   }
 

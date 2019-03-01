@@ -31,6 +31,7 @@ class QuoridorNode implements Comparable<QuoridorNode>, TreeNode {
 
     return possibleTurns.stream()
         .map(turn -> {
+//          System.out.println(turn);
           var newMatchState = match.doTurn(turn);
           return new QuoridorNode(activePlayer, newMatchState, turn, matchEvaluator);
         })

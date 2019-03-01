@@ -1,20 +1,27 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
-import com.shepherdjerred.capstone.ai.evaluator.EvaluationUtils;
+import com.shepherdjerred.capstone.logic.board.search.BoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
+import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 @ToString
-public class OpponentBlindDistanceEvaluatorRule implements EvaluatorRule {
+@AllArgsConstructor
+public class OpponentsShortestPathEvaluatorRule implements EvaluatorRule {
+
+  private final BoardSearch boardSearch;
+  private final PlayerGoals playerGoals;
 
   @Override
   public double evaluate(Match match, PlayerId playerToOptimize) {
     var playerCount = match.getMatchSettings().getPlayerCount();
     Set<PlayerId> players = new HashSet<>();
+
     if (playerCount == PlayerCount.TWO) {
       players.add(PlayerId.ONE);
       players.add(PlayerId.TWO);
@@ -26,11 +33,21 @@ public class OpponentBlindDistanceEvaluatorRule implements EvaluatorRule {
     } else {
       throw new UnsupportedOperationException();
     }
+
     players.remove(playerToOptimize);
-    var totalDistance = players.stream()
-        .map(player -> EvaluationUtils.getBlindDistanceToGoal(match.getBoard(), player))
+
+    var sumOfDistances = players.stream()
+        .map(player -> {
+          var gridSize = match.getBoard().getBoardSettings().getGridSize();
+          var goals = playerGoals.getGoalCoordinatesForPlayer(player,
+              gridSize);
+          return boardSearch.getShortestPathToAnyDestination(match.getBoard(),
+              match.getBoard().getPawnLocation(player),
+              goals);
+        })
         .mapToInt(Integer::intValue)
         .sum();
-    return totalDistance;
+
+    return Math.pow(sumOfDistances, 2);
   }
 }
