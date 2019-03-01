@@ -4,16 +4,11 @@ import com.shepherdjerred.capstone.ai.alphabeta.AlphaBetaQuoridorAi;
 import com.shepherdjerred.capstone.ai.evaluator.DefaultMatchEvaluator;
 import com.shepherdjerred.capstone.ai.evaluator.RandomMatchEvaluator;
 import com.shepherdjerred.capstone.ai.montecarlo.MonteCarloQuoridorAi;
-import com.shepherdjerred.capstone.logic.board.Board;
-import com.shepherdjerred.capstone.logic.board.BoardPieces;
-import com.shepherdjerred.capstone.logic.board.BoardPiecesInitializer;
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
-import com.shepherdjerred.capstone.logic.board.layout.BoardCellsInitializer;
-import com.shepherdjerred.capstone.logic.board.layout.BoardLayout;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchSettings;
-import com.shepherdjerred.capstone.logic.match.MatchSettings.PlayerCount;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
+import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import com.shepherdjerred.capstone.logic.util.MatchFormatter;
@@ -22,20 +17,12 @@ import org.junit.Test;
 
 public class SampleTest {
 
+  @Ignore
   @Test
   public void monteCarloVersusAlphaBeta() {
     var boardSettings = new BoardSettings(9, PlayerCount.TWO);
-    var matchSettings = new MatchSettings(10, PlayerId.ONE, boardSettings);
-
-    var boardCellsInitializer = new BoardCellsInitializer();
-    var boardLayout = BoardLayout.fromBoardSettings(boardCellsInitializer, boardSettings);
-
-    var pieceBoardLocationsInitializer = new BoardPiecesInitializer();
-    var pieceBoardLocations = BoardPieces.initializePieceLocations(boardSettings,
-        pieceBoardLocationsInitializer);
-
-    var board = Board.createBoard(boardLayout, pieceBoardLocations);
-    var match = Match.startNewMatch(matchSettings, board);
+    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
+    var match = Match.from(matchSettings, boardSettings);
 
     var monte = new MonteCarloQuoridorAi(1, new DefaultMatchEvaluator(), 6000);
     var alpha = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 3);
@@ -43,26 +30,28 @@ public class SampleTest {
     simulateAi(match, monte, alpha);
   }
 
+  @Test
+  public void alphaBetaVersusAlphaBeta() {
+    var boardSettings = new BoardSettings(9, PlayerCount.TWO);
+    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
+    var match = Match.from(matchSettings, boardSettings);
+
+    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 2);
+
+    simulateAi(match, alphaBetaAi, alphaBetaAi);
+  }
+
   @Ignore
   @Test
   public void alphaBetaVersusRandom() {
     var boardSettings = new BoardSettings(9, PlayerCount.TWO);
-    var matchSettings = new MatchSettings(10, PlayerId.ONE, boardSettings);
-
-    var boardCellsInitializer = new BoardCellsInitializer();
-    var boardLayout = BoardLayout.fromBoardSettings(boardCellsInitializer, boardSettings);
-
-    var pieceBoardLocationsInitializer = new BoardPiecesInitializer();
-    var pieceBoardLocations = BoardPieces.initializePieceLocations(boardSettings,
-        pieceBoardLocationsInitializer);
-
-    var board = Board.createBoard(boardLayout, pieceBoardLocations);
-    var initialMatchState = Match.startNewMatch(matchSettings, board);
+    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
+    var match = Match.from(matchSettings, boardSettings);
 
     var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 2);
     var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator(), 2);
 
-    simulateAi(initialMatchState, alphaBetaAi, randomAi);
+    simulateAi(match, alphaBetaAi, randomAi);
   }
 
   private void simulateAi(Match match, QuoridorAi playerOne, QuoridorAi playerTwo) {

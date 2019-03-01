@@ -23,7 +23,7 @@ public class AStarBoardSearch implements BoardSearch {
         goals,
         0);
     var solution = algorithm.searchSolution(root);
-
+    
     if (solution != null) {
       return solution.getCostSoFar();
     } else {

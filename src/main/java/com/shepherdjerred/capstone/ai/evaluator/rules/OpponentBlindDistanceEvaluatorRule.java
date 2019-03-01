@@ -2,7 +2,7 @@ package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.ai.evaluator.EvaluationUtils;
 import com.shepherdjerred.capstone.logic.match.Match;
-import com.shepherdjerred.capstone.logic.match.MatchSettings.PlayerCount;
+import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ public class OpponentBlindDistanceEvaluatorRule implements EvaluatorRule {
 
   @Override
   public double evaluate(Match match, PlayerId playerToOptimize) {
-    var playerCount = match.getMatchSettings().getBoardSettings().getPlayerCount();
+    var playerCount = match.getMatchSettings().getPlayerCount();
     Set<PlayerId> players = new HashSet<>();
     if (playerCount == PlayerCount.TWO) {
       players.add(PlayerId.ONE);

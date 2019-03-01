@@ -32,17 +32,16 @@ public class BoardAStarSearchNode extends AStarSearchNode {
   public List<TreeNode> getChildNodes() {
     var generator = new TurnGenerator();
     var validTurns = generator.generateValidTurns(match);
-//    log.info(validTurns);
+    //    log.info(validTurns);
     List<TreeNode> destinations = validTurns.stream()
         .filter(turn -> turn instanceof MovePawnTurn)
         .map(turn -> (MovePawnTurn) turn)
         .map(turn -> {
-          log.info(turn);
-          return turn.getDestination();
+          var newMatch = match.doTurn(turn);
+          return new BoardAStarSearchNode(newMatch, playerId, turn.getDestination(), goals, cost + 1);
         })
-        .map(destination -> new BoardAStarSearchNode(match, playerId, destination, goals, cost + 1))
         .collect(Collectors.toList());
-    log.info("Finished");
+//    log.info("Finished");
     return destinations;
   }
 
@@ -58,13 +57,14 @@ public class BoardAStarSearchNode extends AStarSearchNode {
 
   @Override
   public int getEstimatedCostToSolution() {
-    return EvaluationUtils.getBlindDistanceToGoal(match.getBoard(), playerId) / 2;
+    return EvaluationUtils.getBlindDistanceToGoal(match.getBoard(), playerId);
   }
 
   @Override
   public boolean isSamePosition(AStarSearchNode node) {
     if (node instanceof BoardAStarSearchNode) {
       var boardNode = (BoardAStarSearchNode) node;
+//      log.info(location.equals(boardNode.getLocation()));
       return location.equals(boardNode.getLocation());
     } else {
       log.error("Invalid comparison");
