@@ -6,9 +6,8 @@ import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
+//@Log4j2
 public class EvaluationUtils {
   public static int getBlindDistanceToGoal(Board board, PlayerId playerId) {
     var pawn = board.getPawnLocation(playerId);
