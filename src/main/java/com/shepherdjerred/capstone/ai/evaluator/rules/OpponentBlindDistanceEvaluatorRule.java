@@ -1,4 +1,4 @@
-package com.shepherdjerred.capstone.ai.evaluator.rule;
+package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.ai.evaluator.EvaluationUtils;
 import com.shepherdjerred.capstone.logic.match.Match;

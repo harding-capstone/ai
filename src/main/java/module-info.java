@@ -4,6 +4,6 @@ module com.shepherdjerred.capstone.ai {
   requires org.apache.logging.log4j;
   requires ai.algorithms;
   exports com.shepherdjerred.capstone.ai;
-  exports com.shepherdjerred.capstone.ai.ab;
+  exports com.shepherdjerred.capstone.ai.alphabeta;
   exports com.shepherdjerred.capstone.ai.evaluator;
 }

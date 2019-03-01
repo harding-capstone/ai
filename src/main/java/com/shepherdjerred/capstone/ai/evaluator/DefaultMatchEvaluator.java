@@ -1,14 +1,14 @@
 package com.shepherdjerred.capstone.ai.evaluator;
 
-import com.shepherdjerred.capstone.ai.evaluator.rule.DefeatEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.EvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.OpponentBlindDistanceEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.OpponentJumpPotentialEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.OptimizingPlayerActualDistanceEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.OptimizingPlayerJumpPotentialEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.RemainingWallsEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.VictoryEvaluatorRule;
-import com.shepherdjerred.capstone.ai.evaluator.rule.WallsNearbyEnemyEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.DefeatEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.EvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentBlindDistanceEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentJumpPotentialEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OptimizingPlayerActualDistanceEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.OptimizingPlayerJumpPotentialEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.RemainingWallsEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.VictoryEvaluatorRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.WallsNearbyEnemyEvaluatorRule;
 import com.shepherdjerred.capstone.ai.search.astar.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
@@ -23,7 +23,7 @@ public class DefaultMatchEvaluator implements MatchEvaluator {
   @Override
   public double evaluateMatch(Match match, PlayerId playerToOptimize) {
     Map<EvaluatorRule, Double> evaluators = new HashMap<>();
-//    rule.put(new OptimizingPlayerBlindDistanceEvaluatorRule(), 1.0);
+//    rules.put(new OptimizingPlayerBlindDistanceEvaluatorRule(), 1.0);
     evaluators.put(new OptimizingPlayerActualDistanceEvaluatorRule(new AStarBoardSearch()), 3.0);
     evaluators.put(new DefeatEvaluatorRule(), 1.0);
     evaluators.put(new OptimizingPlayerActualDistanceEvaluatorRule(new AStarBoardSearch()), 1.0);

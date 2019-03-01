@@ -1,4 +1,4 @@
-package com.shepherdjerred.capstone.ai.evaluator.rule;
+package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import static com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator.MAX_SCORE;
 

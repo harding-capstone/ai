@@ -1,9 +1,11 @@
-package com.shepherdjerred.capstone.ai.evaluator.rule;
+package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
+import lombok.ToString;
 
-public class OptimizingPlayerJumpPotentialEvaluatorRule implements EvaluatorRule {
+@ToString
+public class WallsNearbyEnemyEvaluatorRule implements EvaluatorRule {
 
   @Override
   public double evaluate(Match match, PlayerId playerToOptimize) {

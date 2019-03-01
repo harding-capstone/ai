@@ -1,6 +1,6 @@
 package com.shepherdjerred.capstone.ai;
 
-import com.shepherdjerred.capstone.ai.ab.AlphaBetaQuoridorAi;
+import com.shepherdjerred.capstone.ai.alphabeta.AlphaBetaQuoridorAi;
 import com.shepherdjerred.capstone.ai.evaluator.DefaultMatchEvaluator;
 import com.shepherdjerred.capstone.ai.evaluator.RandomMatchEvaluator;
 import com.shepherdjerred.capstone.ai.montecarlo.MonteCarloQuoridorAi;

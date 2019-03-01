@@ -1,4 +1,4 @@
-package com.shepherdjerred.capstone.ai.ab;
+package com.shepherdjerred.capstone.ai.alphabeta;
 
 import com.github.bentorfs.ai.common.TreeNode;
 import com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator;
