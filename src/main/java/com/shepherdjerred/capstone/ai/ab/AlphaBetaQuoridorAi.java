@@ -2,7 +2,7 @@ package com.shepherdjerred.capstone.ai.ab;
 
 import com.github.bentorfs.ai.search.minimax.MiniMaxAlgorithm;
 import com.shepherdjerred.capstone.ai.QuoridorAi;
-import com.shepherdjerred.capstone.ai.ab.evaluator.MatchEvaluator;
+import com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import lombok.AllArgsConstructor;

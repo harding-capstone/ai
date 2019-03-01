@@ -1,4 +1,4 @@
-package com.shepherdjerred.capstone.ai.ab.evaluator;
+package com.shepherdjerred.capstone.ai.evaluator;
 
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
