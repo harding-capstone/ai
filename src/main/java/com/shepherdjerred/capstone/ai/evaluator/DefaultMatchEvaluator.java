@@ -15,9 +15,8 @@ import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
+//@Log4j2
 public class DefaultMatchEvaluator implements MatchEvaluator {
 
 
