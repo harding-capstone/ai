@@ -34,7 +34,7 @@ public class QuoridorNode implements IQuoridorNode {
     return possibleTurns.stream()
         .map(turn -> {
 //          System.out.println(turn);
-          var newMatchState = match.doTurn(turn);
+          var newMatchState = match.doTurnUnchecked(turn);
           return new QuoridorNode(newMatchState.getActivePlayerId(), newMatchState, turn, matchEvaluator);
         })
         .collect(Collectors.toSet());

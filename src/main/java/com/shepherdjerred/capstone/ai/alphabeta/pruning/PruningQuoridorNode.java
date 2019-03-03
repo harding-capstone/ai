@@ -39,7 +39,7 @@ public class PruningQuoridorNode implements IQuoridorNode {
     return possibleTurns.stream()
         .map(turn -> {
 //          System.out.println(turn);
-          var newMatchState = match.doTurn(turn);
+          var newMatchState = match.doTurnUnchecked(turn);
           PlayerId op;
           if (currentDepth == 0) {
             op = optimizingPlayer;
