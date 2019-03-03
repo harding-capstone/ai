@@ -8,4 +8,6 @@ module com.shepherdjerred.capstone.ai {
   exports com.shepherdjerred.capstone.ai;
   exports com.shepherdjerred.capstone.ai.alphabeta;
   exports com.shepherdjerred.capstone.ai.evaluator;
+  exports com.shepherdjerred.capstone.ai.alphabeta.pruning;
+  exports com.shepherdjerred.capstone.ai.alphabeta.pruning.rules;
 }
