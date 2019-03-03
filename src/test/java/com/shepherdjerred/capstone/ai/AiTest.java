@@ -112,13 +112,12 @@ public class AiTest {
     var weights = new EvaluatorWeights(
         1,
         1,
-        1,
-        1,
+        3,
+        8,
         1);
-    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2, 5);
-    var randomAi = new PruningAlphaBetaQuoridorAi(new RandomlyMultipliedMatchEvaluator(.5,
-        -.3,
-        new WeightedMatchEvaluator(weights)), 2, 5);
+    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2, 1);
+    var randomAi = new PruningAlphaBetaQuoridorAi(new RandomlyMultipliedMatchEvaluator(1.2, .7,
+        new WeightedMatchEvaluator(weights)), 2, 1);
 
     simulateAi(match, alphaBetaAi, randomAi);
   }

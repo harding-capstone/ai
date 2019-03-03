@@ -8,6 +8,7 @@ import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import com.shepherdjerred.capstone.logic.turn.generator.TurnGenerator;
+import com.shepherdjerred.capstone.logic.turn.validator.TurnValidatorFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,7 +38,7 @@ public class QuoridorNestedMonteCarloSearchState implements
 
   @Override
   public List<Turn> findAllLegalActions() {
-    var turnGenerator = new TurnGenerator();
+    var turnGenerator = new TurnGenerator(new TurnValidatorFactory());
     var possibleTurns = turnGenerator.generateValidTurns(match);
     return new ArrayList<>(possibleTurns);
   }
@@ -54,7 +55,7 @@ public class QuoridorNestedMonteCarloSearchState implements
 
   @Override
   public Pair<Double, List<Turn>> simulation() {
-    var turnGenerator = new TurnGenerator();
+    var turnGenerator = new TurnGenerator(new TurnValidatorFactory());
     List<Turn> possibleTurns = findAllLegalActions();
     List<Turn> simulatedTurns = new ArrayList<>();
     var tempMatch = match;

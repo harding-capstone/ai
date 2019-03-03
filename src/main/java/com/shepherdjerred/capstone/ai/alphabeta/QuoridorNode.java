@@ -6,6 +6,7 @@ import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerId;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import com.shepherdjerred.capstone.logic.turn.generator.TurnGenerator;
+import com.shepherdjerred.capstone.logic.turn.validator.TurnValidatorFactory;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class QuoridorNode implements IQuoridorNode {
 
   @Override
   public Collection<TreeNode> getChildNodes() {
-    var turnGenerator = new TurnGenerator();
+    var turnGenerator = new TurnGenerator(new TurnValidatorFactory());
     var possibleTurns = turnGenerator.generateValidTurns(match);
 
     return possibleTurns.stream()
