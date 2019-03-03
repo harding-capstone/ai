@@ -18,7 +18,7 @@ public class OpponentsShortestPathEvaluatorRule implements EvaluatorRule {
   private final PlayerGoals playerGoals;
 
   @Override
-  public double evaluate(Match match) {
+  public double evaluate(Match match, PlayerId player) {
     var playerCount = match.getMatchSettings().getPlayerCount();
     Set<PlayerId> players = new HashSet<>();
 
@@ -34,15 +34,15 @@ public class OpponentsShortestPathEvaluatorRule implements EvaluatorRule {
       throw new UnsupportedOperationException();
     }
 
-    players.remove(match.getActivePlayerId());
+    players.remove(player);
 
     var sumOfDistances = players.stream()
-        .map(player -> {
+        .map(p -> {
           var gridSize = match.getBoard().getBoardSettings().getGridSize();
-          var goals = playerGoals.getGoalCoordinatesForPlayer(player,
+          var goals = playerGoals.getGoalCoordinatesForPlayer(p,
               gridSize);
           return boardSearch.getShortestPathToAnyDestination(match.getBoard(),
-              match.getBoard().getPawnLocation(player),
+              match.getBoard().getPawnLocation(p),
               goals);
         })
         .mapToInt(Integer::intValue)

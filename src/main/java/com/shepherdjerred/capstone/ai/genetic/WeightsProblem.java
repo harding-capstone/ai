@@ -87,6 +87,9 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
 //      System.out.println("\n\n");
 
       currentTurn++;
+      if (currentTurn > 500) {
+        log.info("Long game " + currentTurn);
+      }
     }
 
     if (match.getMatchStatus().getVictor() == PlayerId.ONE) {

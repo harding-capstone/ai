@@ -7,9 +7,8 @@ import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.DeepWallPruningRul
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PieceDistancePruningRule;
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.RandomDiscardPruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.EvaluatorWeights;
-import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
 import com.shepherdjerred.capstone.ai.evaluator.RandomlyMultipliedMatchEvaluator;
-import com.shepherdjerred.capstone.ai.montecarlo.MonteCarloQuoridorAi;
+import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchSettings;
@@ -26,45 +25,6 @@ import org.junit.Test;
 
 @Log4j2
 public class AiTest {
-
-  @Ignore
-  @Test
-  public void monteCarloVersusAlphaBeta() {
-    var boardSettings = new BoardSettings(9, PlayerCount.TWO);
-    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
-    var match = Match.from(matchSettings, boardSettings);
-
-    var weights = new EvaluatorWeights(
-        1,
-        1,
-        1,
-        1,
-        1);
-
-    var monte = new MonteCarloQuoridorAi(1, new WeightedMatchEvaluator(weights), 6000);
-    var alpha = new AlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 3);
-
-    simulateAi(match, monte, alpha);
-  }
-
-  @Ignore
-  @Test
-  public void monteCarloVersusMonteCarlo() {
-    var boardSettings = new BoardSettings(9, PlayerCount.TWO);
-    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
-    var match = Match.from(matchSettings, boardSettings);
-
-    var weights = new EvaluatorWeights(
-        1,
-        1,
-        1,
-        1,
-        1);
-
-    var monte = new MonteCarloQuoridorAi(2, new WeightedMatchEvaluator(weights), 3000);
-
-    simulateAi(match, monte, monte);
-  }
 
   @Ignore
   @Test
@@ -115,25 +75,25 @@ public class AiTest {
     var match = Match.from(matchSettings, boardSettings);
 
     var pruningRules = ImmutableSet.of(new RandomDiscardPruningRule(100),
-        new DeepWallPruningRule(100),
+        new DeepWallPruningRule(5),
         new PieceDistancePruningRule(3));
 
     var weights = new EvaluatorWeights(
         1,
         0,
-        20,
+        10,
         12,
         1);
 
     var regularEval = new WeightedMatchEvaluator(weights);
-    var randomEval = new RandomlyMultipliedMatchEvaluator(1.2, .7, regularEval);
+    var randomEval = new RandomlyMultipliedMatchEvaluator(1.1, .9, regularEval);
 
-    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(regularEval, 2, pruningRules);
-    var randomAi = new PruningAlphaBetaQuoridorAi(randomEval, 2, pruningRules);
+    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(regularEval, 3, pruningRules);
+    var randomAi = new PruningAlphaBetaQuoridorAi(randomEval, 3, pruningRules);
 
-    while (true) {
+//    while (true) {
       simulateAi(match, alphaBetaAi, randomAi);
-    }
+//    }
   }
 
   private void simulateAi(Match match, QuoridorAi playerOne, QuoridorAi playerTwo) {
@@ -143,8 +103,10 @@ public class AiTest {
     int currentTurn = 1;
     while (match.getMatchStatus().getStatus() == Status.IN_PROGRESS) {
 
-      System.out.println("=== Turn: " + currentTurn);
-      System.out.println("=== Player: " + match.getActivePlayerId());
+      log.info("=== Turn: " + currentTurn);
+      log.info("=== Player: " + match.getActivePlayerId());
+
+      var player = match.getActivePlayerId();
 
       var startTime = Instant.now();
       Turn aiTurn;
@@ -156,13 +118,20 @@ public class AiTest {
       var endTime = Instant.now();
       var elapsed = Duration.between(startTime, endTime);
 
-//      System.out.println(currentMatchState.getMatchStatus().getStatus());
+      log.info(new WeightedMatchEvaluator(new EvaluatorWeights(1,
+          1,
+          10,
+          12,
+          1)).evaluateMatch(match, player));
+
+//      log.info(currentMatchState.getMatchStatus().getStatus());
       match = match.doTurn(aiTurn);
-//      System.out.println(aiTurn);
-      System.out.println(matchFormatter.matchToString(match));
+//      log.info(aiTurn);
+      log.info(matchFormatter.matchToString(match));
       log.info("Turn taken: " + aiTurn);
       log.info("Time taken: " + elapsed.toMillis() / 1000.0 + " seconds");
-      System.out.println("\n\n");
+
+      log.info("\n\n");
 
       currentTurn++;
     }

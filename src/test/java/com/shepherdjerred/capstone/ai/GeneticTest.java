@@ -7,10 +7,8 @@ import io.jenetics.Genotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStatistics;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class GeneticTest {
 
   @Test

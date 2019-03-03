@@ -1,6 +1,7 @@
 package com.shepherdjerred.capstone.ai.evaluator;
 
 import com.shepherdjerred.capstone.ai.evaluator.rules.AdjacentPawnsEvaluationRule;
+import com.shepherdjerred.capstone.ai.evaluator.rules.DefeatEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.EvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.OpponentsShortestPathEvaluatorRule;
 import com.shepherdjerred.capstone.ai.evaluator.rules.RemainingWallsEvaluatorRule;
@@ -10,6 +11,7 @@ import com.shepherdjerred.capstone.ai.evaluator.rules.WallsNearbyEvaluationRule;
 import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
+import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -24,11 +26,11 @@ public class WeightedMatchEvaluator implements MatchEvaluator {
   private final EvaluatorWeights weights;
 
   @Override
-  public double evaluateMatch(Match match) {
+  public double evaluateMatch(Match match, PlayerId optimizingPlayer) {
     Map<EvaluatorRule, Double> evaluators = new HashMap<>();
     evaluators.put(new ShortestPathEvaluatorRule(new AStarBoardSearch(), new PlayerGoals()),
         weights.getShortestPathWeight());
-//    evaluators.put(new DefeatEvaluatorRule(), 1.0);
+    evaluators.put(new DefeatEvaluatorRule(), 1.0);
     evaluators.put(new AdjacentPawnsEvaluationRule(), weights.getAdjacentPawnsWeight());
     evaluators.put(new OpponentsShortestPathEvaluatorRule(new AStarBoardSearch(),
         new PlayerGoals()), weights.getOpponentsShortestPathWeight());
@@ -40,10 +42,10 @@ public class WeightedMatchEvaluator implements MatchEvaluator {
         .map(entry -> {
           var evaluator = entry.getKey();
           var weight = entry.getValue();
-          var rawScore = evaluator.evaluate(match);
+          var rawScore = evaluator.evaluate(match, optimizingPlayer);
           var weightedScore = rawScore * weight;
-          log.debug(evaluator + " RAW: " + rawScore);
-          log.debug(evaluator + " WEIGHTED: " + weightedScore);
+//          log.debug(evaluator + " RAW: " + rawScore);
+//          log.debug(evaluator + " WEIGHTED: " + weightedScore);
           return weightedScore;
         })
         .mapToDouble(Double::doubleValue)

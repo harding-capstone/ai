@@ -2,6 +2,7 @@ package com.shepherdjerred.capstone.ai.evaluator;
 
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
+import com.shepherdjerred.capstone.logic.player.PlayerId;
 import java.util.Random;
 
 public class RandomMatchEvaluator implements MatchEvaluator {
@@ -9,26 +10,26 @@ public class RandomMatchEvaluator implements MatchEvaluator {
   private final Random random = new Random();
 
   @Override
-  public double evaluateMatch(Match match) {
+  public double evaluateMatch(Match match, PlayerId playerId) {
     double max = 10000;
     double min = -10000;
     var randomOffset = min + (max - min) * random.nextDouble();
     return randomOffset
-        + getScoreForDefeat(match)
-        + getScoreForVictory(match);
+        + getScoreForDefeat(match, playerId)
+        + getScoreForVictory(match, playerId);
   }
 
-  private double getScoreForDefeat(Match match) {
+  private double getScoreForDefeat(Match match, PlayerId playerId) {
     if (match.getMatchStatus().getStatus() == Status.VICTORY
-        && match.getMatchStatus().getVictor() != match.getActivePlayerId()) {
+        && match.getMatchStatus().getVictor() != playerId) {
       return MIN_SCORE;
     } else {
       return 0;
     }
   }
 
-  private double getScoreForVictory(Match match) {
-    if (match.getMatchStatus().getVictor() == match.getActivePlayerId()) {
+  private double getScoreForVictory(Match match, PlayerId playerId) {
+    if (match.getMatchStatus().getVictor() == playerId) {
       return MAX_SCORE;
     } else {
       return 0;
