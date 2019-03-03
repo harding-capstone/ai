@@ -1,8 +1,10 @@
 package com.shepherdjerred.capstone.ai;
 
 import com.shepherdjerred.capstone.ai.alphabeta.AlphaBetaQuoridorAi;
-import com.shepherdjerred.capstone.ai.evaluator.DefaultMatchEvaluator;
-import com.shepherdjerred.capstone.ai.evaluator.RandomMatchEvaluator;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningAlphaBetaQuoridorAi;
+import com.shepherdjerred.capstone.ai.evaluator.EvaluatorWeights;
+import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
+import com.shepherdjerred.capstone.ai.evaluator.RandomlyMultipliedMatchEvaluator;
 import com.shepherdjerred.capstone.ai.montecarlo.MonteCarloQuoridorAi;
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
 import com.shepherdjerred.capstone.logic.match.Match;
@@ -19,7 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @Log4j2
-public class SampleTest {
+public class AiTest {
 
   @Ignore
   @Test
@@ -28,8 +30,15 @@ public class SampleTest {
     var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
     var match = Match.from(matchSettings, boardSettings);
 
-    var monte = new MonteCarloQuoridorAi(1, new DefaultMatchEvaluator(), 6000);
-    var alpha = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 3);
+    var weights = new EvaluatorWeights(
+        1,
+        1,
+        1,
+        1,
+        1);
+
+    var monte = new MonteCarloQuoridorAi(1, new WeightedMatchEvaluator(weights), 6000);
+    var alpha = new AlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 3);
 
     simulateAi(match, monte, alpha);
   }
@@ -41,31 +50,75 @@ public class SampleTest {
     var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
     var match = Match.from(matchSettings, boardSettings);
 
-    var monte = new MonteCarloQuoridorAi(1, new DefaultMatchEvaluator(), 3000);
+    var weights = new EvaluatorWeights(
+        1,
+        1,
+        1,
+        1,
+        1);
+
+    var monte = new MonteCarloQuoridorAi(2, new WeightedMatchEvaluator(weights), 3000);
 
     simulateAi(match, monte, monte);
   }
 
+  @Ignore
   @Test
   public void alphaBetaVersusAlphaBeta() {
     var boardSettings = new BoardSettings(9, PlayerCount.TWO);
     var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
     var match = Match.from(matchSettings, boardSettings);
 
-    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 2);
+    var weights = new EvaluatorWeights(
+        1,
+        1,
+        1,
+        1,
+        1);
+
+    var alphaBetaAi = new AlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2);
 
     simulateAi(match, alphaBetaAi, alphaBetaAi);
   }
 
   @Ignore
   @Test
-  public void alphaBetaVersusRandom() {
+  public void alphaBetaDefaultVsRandomlyMultipliedDefault() {
     var boardSettings = new BoardSettings(9, PlayerCount.TWO);
     var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
     var match = Match.from(matchSettings, boardSettings);
 
-    var alphaBetaAi = new AlphaBetaQuoridorAi(new DefaultMatchEvaluator(), 2);
-    var randomAi = new AlphaBetaQuoridorAi(new RandomMatchEvaluator(), 2);
+    var weights = new EvaluatorWeights(
+        1,
+        1,
+        1,
+        1,
+        1);
+
+    var alphaBetaAi = new AlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2);
+    var randomAi = new AlphaBetaQuoridorAi(new RandomlyMultipliedMatchEvaluator(.5,
+        -.3,
+        new WeightedMatchEvaluator(weights)), 2);
+
+    simulateAi(match, alphaBetaAi, randomAi);
+  }
+
+  @Test
+  public void pruningAlphaBetaDefaultVsRandomlyMultipliedDefault() {
+    var boardSettings = new BoardSettings(9, PlayerCount.TWO);
+    var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
+    var match = Match.from(matchSettings, boardSettings);
+
+    var weights = new EvaluatorWeights(
+        1,
+        1,
+        1,
+        1,
+        1);
+    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2, 5);
+    var randomAi = new PruningAlphaBetaQuoridorAi(new RandomlyMultipliedMatchEvaluator(.5,
+        -.3,
+        new WeightedMatchEvaluator(weights)), 2, 5);
 
     simulateAi(match, alphaBetaAi, randomAi);
   }
@@ -94,7 +147,8 @@ public class SampleTest {
       match = match.doTurn(aiTurn);
 //      System.out.println(aiTurn);
       System.out.println(matchFormatter.matchToString(match));
-      log.info("Time taken: " + elapsed.toMillis() / 1000.0 + " secondsr");
+      log.info("Turn taken: " + aiTurn);
+      log.info("Time taken: " + elapsed.toMillis() / 1000.0 + " seconds");
       System.out.println("\n\n");
 
       currentTurn++;

@@ -27,7 +27,7 @@ public class QuoridorNestedMonteCarloSearchState implements
 
   @Override
   public double getScore() {
-    return matchEvaluator.evaluateMatch(match, playerToOptimize);
+    return matchEvaluator.evaluateMatch(match);
   }
 
   @Override

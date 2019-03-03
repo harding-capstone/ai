@@ -18,7 +18,7 @@ public class OpponentsShortestPathEvaluatorRule implements EvaluatorRule {
   private final PlayerGoals playerGoals;
 
   @Override
-  public double evaluate(Match match, PlayerId playerToOptimize) {
+  public double evaluate(Match match) {
     var playerCount = match.getMatchSettings().getPlayerCount();
     Set<PlayerId> players = new HashSet<>();
 
@@ -34,7 +34,7 @@ public class OpponentsShortestPathEvaluatorRule implements EvaluatorRule {
       throw new UnsupportedOperationException();
     }
 
-    players.remove(playerToOptimize);
+    players.remove(match.getActivePlayerId());
 
     var sumOfDistances = players.stream()
         .map(player -> {
