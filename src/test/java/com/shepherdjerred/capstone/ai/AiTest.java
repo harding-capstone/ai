@@ -1,7 +1,11 @@
 package com.shepherdjerred.capstone.ai;
 
+import com.google.common.collect.ImmutableSet;
 import com.shepherdjerred.capstone.ai.alphabeta.AlphaBetaQuoridorAi;
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningAlphaBetaQuoridorAi;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.DeepWallPruningRule;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PieceDistancePruningRule;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.RandomDiscardPruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.EvaluatorWeights;
 import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
 import com.shepherdjerred.capstone.ai.evaluator.RandomlyMultipliedMatchEvaluator;
@@ -92,7 +96,7 @@ public class AiTest {
         1,
         1,
         1,
-        1,
+        2,
         1);
 
     var alphaBetaAi = new AlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2);
@@ -103,23 +107,33 @@ public class AiTest {
     simulateAi(match, alphaBetaAi, randomAi);
   }
 
+  @Ignore
   @Test
   public void pruningAlphaBetaDefaultVsRandomlyMultipliedDefault() {
     var boardSettings = new BoardSettings(9, PlayerCount.TWO);
     var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
     var match = Match.from(matchSettings, boardSettings);
 
+    var pruningRules = ImmutableSet.of(new RandomDiscardPruningRule(100),
+        new DeepWallPruningRule(100),
+        new PieceDistancePruningRule(3));
+
     var weights = new EvaluatorWeights(
         1,
-        1,
-        3,
-        8,
+        0,
+        20,
+        12,
         1);
-    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(new WeightedMatchEvaluator(weights), 2, 1);
-    var randomAi = new PruningAlphaBetaQuoridorAi(new RandomlyMultipliedMatchEvaluator(1.2, .7,
-        new WeightedMatchEvaluator(weights)), 2, 1);
 
-    simulateAi(match, alphaBetaAi, randomAi);
+    var regularEval = new WeightedMatchEvaluator(weights);
+    var randomEval = new RandomlyMultipliedMatchEvaluator(1.2, .7, regularEval);
+
+    var alphaBetaAi = new PruningAlphaBetaQuoridorAi(regularEval, 2, pruningRules);
+    var randomAi = new PruningAlphaBetaQuoridorAi(randomEval, 2, pruningRules);
+
+    while (true) {
+      simulateAi(match, alphaBetaAi, randomAi);
+    }
   }
 
   private void simulateAi(Match match, QuoridorAi playerOne, QuoridorAi playerTwo) {
@@ -152,5 +166,7 @@ public class AiTest {
 
       currentTurn++;
     }
+
+    log.info("WINNER: " + match.getMatchStatus());
   }
 }

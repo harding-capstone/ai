@@ -1,9 +1,8 @@
 package com.shepherdjerred.capstone.ai.alphabeta.pruning.rules;
 
-import com.shepherdjerred.capstone.logic.match.Match;
-import com.shepherdjerred.capstone.logic.turn.Turn;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningQuoridorNode;
 
 public interface PruningRule {
 
-  boolean shouldPrune(Match match, Turn turn);
+  boolean shouldPrune(PruningQuoridorNode node);
 }

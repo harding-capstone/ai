@@ -81,6 +81,10 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.apache.logging.log4j</groupId>-->
+      <!--<artifactId>log4j-slf4j-impl</artifactId>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>com.shepherdjerred.capstone</groupId>
       <artifactId>logic</artifactId>
@@ -93,6 +97,11 @@
     <dependency>
       <groupId>com.github.bentorfs</groupId>
       <artifactId>ai-algorithms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jenetics</groupId>
+      <artifactId>jenetics</artifactId>
+      <version>4.4.0</version>
     </dependency>
   </dependencies>
 </project>
