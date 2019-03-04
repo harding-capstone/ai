@@ -36,10 +36,13 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
       var match = Match.from(matchSettings, boardSettings);
 
       var weightedEvaluator = new WeightedMatchEvaluator(weights);
-      var randomlyMultipliedEvaluator = new RandomlyMultipliedMatchEvaluator(1.2, .8, weightedEvaluator);
+      var randomlyMultipliedEvaluator = new RandomlyMultipliedMatchEvaluator(1.4,
+          .6,
+          weightedEvaluator);
       var randomEvaluator = new RandomMatchEvaluator();
+
       var pruningRules = ImmutableSet.of(
-          new RandomDiscardPruningRule(100),
+          new RandomDiscardPruningRule(60),
           new PieceDistancePruningRule(3));
 
       var alphaBetaAi = new PruningAlphaBetaQuoridorAi(weightedEvaluator, 2, pruningRules);
@@ -78,6 +81,10 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
       match = match.doTurn(aiTurn);
 
       currentTurn++;
+
+      if (currentTurn > 200) {
+        return Integer.MIN_VALUE;
+      }
 
       if (currentTurn < 10) {
         log.info("TURN: " + currentTurn);
