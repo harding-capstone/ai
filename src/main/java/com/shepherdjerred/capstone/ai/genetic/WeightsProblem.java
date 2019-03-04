@@ -6,8 +6,6 @@ import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningAlphaBetaQuoridor
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PieceDistancePruningRule;
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.RandomDiscardPruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.EvaluatorWeights;
-import com.shepherdjerred.capstone.ai.evaluator.RandomMatchEvaluator;
-import com.shepherdjerred.capstone.ai.evaluator.RandomlyMultipliedMatchEvaluator;
 import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
 import com.shepherdjerred.capstone.logic.match.Match;
@@ -36,10 +34,14 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
       var match = Match.from(matchSettings, boardSettings);
 
       var weightedEvaluator = new WeightedMatchEvaluator(weights);
-      var randomlyMultipliedEvaluator = new RandomlyMultipliedMatchEvaluator(1.4,
-          .6,
-          weightedEvaluator);
-      var randomEvaluator = new RandomMatchEvaluator();
+      var constantWeights = new EvaluatorWeights(
+          9612.407041694314,
+          -7288.691596308785,
+          9786.056427421212,
+          2396.69915479313,
+          476.91303038346996
+      );
+      var constantlyWeightedEvaluator = new WeightedMatchEvaluator(constantWeights);
 
       var pruningRules = ImmutableSet.of(
           new RandomDiscardPruningRule(60),
@@ -47,7 +49,7 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
 
       var alphaBetaAi = new PruningAlphaBetaQuoridorAi(weightedEvaluator, 2, pruningRules);
 
-      var randomAi = new PruningAlphaBetaQuoridorAi(randomEvaluator, 2, pruningRules);
+      var randomAi = new PruningAlphaBetaQuoridorAi(constantlyWeightedEvaluator, 2, pruningRules);
 
       return simulateAi(match, alphaBetaAi, randomAi);
     };
