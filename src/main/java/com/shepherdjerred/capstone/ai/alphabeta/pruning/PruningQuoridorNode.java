@@ -6,7 +6,7 @@ import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import com.shepherdjerred.capstone.logic.turn.generator.TurnGenerator;
 import com.shepherdjerred.capstone.logic.turn.validator.TurnValidatorFactory;
@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class PruningQuoridorNode implements IQuoridorNode {
 
-  private final PlayerId optimizingPlayer;
+  private final QuoridorPlayer optimizingPlayer;
   private final Match match;
   private final Turn turn;
   private final MatchEvaluator matchEvaluator;
@@ -40,7 +40,7 @@ public class PruningQuoridorNode implements IQuoridorNode {
         .map(turn -> {
 //          System.out.println(turn);
           var newMatchState = match.doTurnUnchecked(turn);
-          PlayerId op;
+          QuoridorPlayer op;
           if (currentDepth == 0) {
             op = optimizingPlayer;
           } else {
@@ -65,7 +65,7 @@ public class PruningQuoridorNode implements IQuoridorNode {
 
   @Override
   public double getValue() {
-//    log.info("OPTIMIZING FOR " + optimizingPlayer + " AP: " + match.getActivePlayerId() + " DEPTH: " + getCurrentDepth());
+//    log.info("OPTIMIZING FOR " + optimizingPlayer + " AP: " + match.getActiveQuoridorPlayer() + " DEPTH: " + getCurrentDepth());
     return matchEvaluator.evaluateMatch(match, optimizingPlayer);
   }
 }

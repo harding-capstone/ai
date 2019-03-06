@@ -12,7 +12,7 @@ import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchSettings;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
@@ -30,7 +30,7 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
   public Function<EvaluatorWeights, Integer> fitness() {
     return weights -> {
       var boardSettings = new BoardSettings(9, PlayerCount.TWO);
-      var matchSettings = new MatchSettings(10, PlayerId.ONE, PlayerCount.TWO);
+      var matchSettings = new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.TWO);
       var match = Match.from(matchSettings, boardSettings);
 
       var weightedEvaluator = new WeightedMatchEvaluator(weights);
@@ -74,7 +74,7 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
     while (match.getMatchStatus().getStatus() == Status.IN_PROGRESS) {
 
       Turn aiTurn;
-      if (match.getActivePlayerId() == PlayerId.ONE) {
+      if (match.getActivePlayerId() == QuoridorPlayer.ONE) {
         aiTurn = playerOne.calculateBestTurn(match);
       } else {
         aiTurn = playerTwo.calculateBestTurn(match);
@@ -99,7 +99,7 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
 
     log.info(match.getMatchStatus().getVictor());
 
-    if (match.getMatchStatus().getVictor() == PlayerId.ONE) {
+    if (match.getMatchStatus().getVictor() == QuoridorPlayer.ONE) {
       return currentTurn * -1;
     } else {
       return Integer.MIN_VALUE;

@@ -1,7 +1,7 @@
 package com.shepherdjerred.capstone.ai.evaluator;
 
 import com.shepherdjerred.capstone.logic.match.Match;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import java.util.Random;
 import lombok.AllArgsConstructor;
 
@@ -15,7 +15,7 @@ public class RandomlyMultipliedMatchEvaluator implements MatchEvaluator {
   private final Random random = new Random();
 
   @Override
-  public double evaluateMatch(Match match, PlayerId playerId) {
+  public double evaluateMatch(Match match, QuoridorPlayer playerId) {
     var score = matchEvaluator.evaluateMatch(match, playerId);
     var multiplier = getRandomMultiplier();
     return score * multiplier;

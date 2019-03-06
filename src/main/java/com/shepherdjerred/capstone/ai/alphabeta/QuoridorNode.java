@@ -4,7 +4,7 @@ import com.github.bentorfs.ai.common.TreeNode;
 import com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import com.shepherdjerred.capstone.logic.turn.Turn;
 import com.shepherdjerred.capstone.logic.turn.generator.TurnGenerator;
 import com.shepherdjerred.capstone.logic.turn.validator.TurnValidatorFactory;
@@ -21,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class QuoridorNode implements IQuoridorNode {
 
-  private final PlayerId optimizingPlayer;
+  private final QuoridorPlayer optimizingPlayer;
   private final Match match;
   private final Turn turn;
   private final MatchEvaluator matchEvaluator;

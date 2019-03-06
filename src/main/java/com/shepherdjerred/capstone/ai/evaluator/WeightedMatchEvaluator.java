@@ -11,7 +11,7 @@ import com.shepherdjerred.capstone.ai.evaluator.rules.WallsNearbyEvaluationRule;
 import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class WeightedMatchEvaluator implements MatchEvaluator {
   private final EvaluatorWeights weights;
 
   @Override
-  public double evaluateMatch(Match match, PlayerId optimizingPlayer) {
+  public double evaluateMatch(Match match, QuoridorPlayer optimizingPlayer) {
     Map<EvaluatorRule, Double> evaluators = new HashMap<>();
     evaluators.put(new ShortestPathEvaluatorRule(new AStarBoardSearch(), new PlayerGoals()),
         weights.getShortestPathWeight());
