@@ -6,7 +6,7 @@ import java.util.Random;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class RandomDiscardPruningRule implements PruningRule {
+public class RandomDiscardNodePruningRule implements NodePruningRule {
 
   private static final int MIN = 0;
   private static final int MAX = 100;

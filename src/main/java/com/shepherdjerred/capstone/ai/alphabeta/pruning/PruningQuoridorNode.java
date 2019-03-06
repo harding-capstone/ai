@@ -2,7 +2,7 @@ package com.shepherdjerred.capstone.ai.alphabeta.pruning;
 
 import com.github.bentorfs.ai.common.TreeNode;
 import com.shepherdjerred.capstone.ai.alphabeta.IQuoridorNode;
-import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PruningRule;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.NodePruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.MatchEvaluator;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchStatus.Status;
@@ -28,34 +28,41 @@ public class PruningQuoridorNode implements IQuoridorNode {
   private final Match match;
   private final Turn turn;
   private final MatchEvaluator matchEvaluator;
-  private final Set<PruningRule> pruningRules;
+  private final Set<NodePruningRule> nodePruningRules;
   private final int currentDepth;
+  private int childrenCount;
 
   @Override
   public Collection<TreeNode> getChildNodes() {
     var turnGenerator = new TurnGenerator(new TurnValidatorFactory());
     var possibleTurns = turnGenerator.generateValidTurns(match);
 
-    return possibleTurns.stream()
+    Set<TreeNode> children = possibleTurns.stream()
         .map(turn -> {
-//          System.out.println(turn);
           var newMatchState = match.doTurnUnchecked(turn);
-          QuoridorPlayer op;
+          QuoridorPlayer nextOptimizingPlayer;
+
           if (currentDepth == 0) {
-            op = optimizingPlayer;
+            nextOptimizingPlayer = optimizingPlayer;
           } else {
-            op = newMatchState.getActivePlayerId();
+            nextOptimizingPlayer = newMatchState.getActivePlayerId();
           }
-          return new PruningQuoridorNode(op,
+
+          return new PruningQuoridorNode(nextOptimizingPlayer,
               newMatchState,
               turn,
               matchEvaluator,
-              pruningRules,
-              currentDepth + 1);
+              nodePruningRules,
+              currentDepth + 1,
+              0);
         })
-        .filter(node -> pruningRules.stream()
-            .noneMatch(rule -> rule.shouldPrune(node)))
+        .filter(node -> nodePruningRules.stream().noneMatch(rule -> rule.shouldPrune(node)))
         .collect(Collectors.toSet());
+
+    this.childrenCount = children.size();
+    log.info(String.format("Depth: %s, Children %s", currentDepth, childrenCount));
+
+    return children;
   }
 
   @Override

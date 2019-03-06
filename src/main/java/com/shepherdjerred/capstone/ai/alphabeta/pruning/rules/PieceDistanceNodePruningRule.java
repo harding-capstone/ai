@@ -8,10 +8,12 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @ToString
 @AllArgsConstructor
-public class PieceDistancePruningRule implements PruningRule {
+public class PieceDistanceNodePruningRule implements NodePruningRule {
 
   private final int distance;
 
@@ -19,21 +21,31 @@ public class PieceDistancePruningRule implements PruningRule {
   public boolean shouldPrune(PruningQuoridorNode node) {
     var match = node.getMatch();
     var turn = node.getTurn();
-    var pieces = match.getBoard().getPieceLocations();
+    var pieceCoords = match.getBoard().getPieceLocations();
 
+    Set<Coordinate> turnCoords = new HashSet<>();
     if (turn instanceof MovePawnTurn) {
       return false;
     } else if (turn instanceof PlaceWallTurn) {
-      Set<Coordinate> turnCoordinates = new HashSet<>();
       var wallLocation = ((PlaceWallTurn) turn).getLocation();
-      turnCoordinates.add(wallLocation.getFirstCoordinate());
-      turnCoordinates.add(wallLocation.getVertex());
-      turnCoordinates.add(wallLocation.getSecondCoordinate());
-      return pieces.stream()
-          .noneMatch(piece -> turnCoordinates.stream()
-              .anyMatch(coord -> Coordinate.calculateManhattanDistance(piece, coord) <= distance));
+      turnCoords.add(wallLocation.getFirstCoordinate());
+      turnCoords.add(wallLocation.getVertex());
+      turnCoords.add(wallLocation.getSecondCoordinate());
     } else {
       throw new UnsupportedOperationException();
+    }
+
+
+    var shouldBePruned = pieceCoords.stream()
+        .filter(pieceCoord -> !turnCoords.contains(pieceCoord))
+        .allMatch(pieceCoord -> turnCoords.stream()
+            .allMatch(turnCoordinate -> Coordinate.calculateManhattanDistance(pieceCoord, turnCoordinate)
+                > distance));
+
+    if (shouldBePruned) {
+      return true;
+    } else {
+      return false;
     }
 
   }

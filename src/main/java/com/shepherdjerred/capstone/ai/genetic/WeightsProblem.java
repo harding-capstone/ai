@@ -3,8 +3,8 @@ package com.shepherdjerred.capstone.ai.genetic;
 import com.google.common.collect.ImmutableSet;
 import com.shepherdjerred.capstone.ai.QuoridorAi;
 import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningAlphaBetaQuoridorAi;
-import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PieceDistancePruningRule;
-import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.RandomDiscardPruningRule;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.PieceDistanceNodePruningRule;
+import com.shepherdjerred.capstone.ai.alphabeta.pruning.rules.RandomDiscardNodePruningRule;
 import com.shepherdjerred.capstone.ai.evaluator.EvaluatorWeights;
 import com.shepherdjerred.capstone.ai.evaluator.WeightedMatchEvaluator;
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
@@ -44,8 +44,8 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
       var constantlyWeightedEvaluator = new WeightedMatchEvaluator(constantWeights);
 
       var pruningRules = ImmutableSet.of(
-          new RandomDiscardPruningRule(60),
-          new PieceDistancePruningRule(3));
+          new RandomDiscardNodePruningRule(60),
+          new PieceDistanceNodePruningRule(3));
 
       var alphaBetaAi = new PruningAlphaBetaQuoridorAi(weightedEvaluator, 2, pruningRules);
 

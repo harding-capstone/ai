@@ -4,10 +4,12 @@ import com.shepherdjerred.capstone.ai.alphabeta.pruning.PruningQuoridorNode;
 import com.shepherdjerred.capstone.logic.turn.PlaceWallTurn;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @ToString
 @AllArgsConstructor
-public class DeepWallPruningRule implements PruningRule {
+public class DeepWallNodePruningRule implements NodePruningRule {
 
   private final int maxWallDepth;
 
