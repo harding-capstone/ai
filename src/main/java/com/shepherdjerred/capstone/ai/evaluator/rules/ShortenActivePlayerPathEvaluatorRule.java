@@ -7,6 +7,4 @@ public class ShortenActivePlayerPathEvaluatorRule {
   horizontal and vertical).
    */
 
-
-
 }
