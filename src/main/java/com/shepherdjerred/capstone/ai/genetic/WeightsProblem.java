@@ -68,7 +68,7 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
   }
 
   private int simulateAi(Match match, QuoridorAi playerOne, QuoridorAi playerTwo) {
-    log.info("Simulating AI match");
+//    log.info("Simulating AI match");
 
     int currentTurn = 1;
     while (match.getMatchStatus().getStatus() == Status.IN_PROGRESS) {
@@ -89,11 +89,11 @@ public class WeightsProblem implements Problem<EvaluatorWeights, DoubleGene, Int
       }
 
       if (currentTurn < 10) {
-        log.info("TURN: " + currentTurn);
+//        log.info("TURN: " + currentTurn);
       } else if (currentTurn % 10 == 0 && currentTurn < 100) {
-        log.info("TURN: " + currentTurn);
+//        log.info("TURN: " + currentTurn);
       } else if (currentTurn % 50 == 0) {
-        log.info("TURN: " + currentTurn);
+//        log.info("TURN: " + currentTurn);
       }
     }
 

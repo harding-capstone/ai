@@ -2,14 +2,14 @@ package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.logic.board.Coordinate;
 import com.shepherdjerred.capstone.logic.match.Match;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import lombok.ToString;
 
 @ToString
 public class OpponentJumpPotentialEvaluatorRule implements EvaluatorRule {
 
   @Override
-  public double evaluate(Match match, PlayerId playerToOptimize) {
+  public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
     Coordinate playerLocation = match.getBoard().getPawnLocation(playerToOptimize);
     double scoreValue;
     double penalties = 0;
@@ -32,7 +32,7 @@ public class OpponentJumpPotentialEvaluatorRule implements EvaluatorRule {
       }
     }
 
-    scoreValue = 33.3 * penalties;
+    scoreValue = 100 - 33.3 * penalties;
 
     return scoreValue;
   }

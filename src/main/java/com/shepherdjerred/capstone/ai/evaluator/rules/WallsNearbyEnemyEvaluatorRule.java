@@ -1,25 +1,23 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.logic.board.Coordinate;
-import com.shepherdjerred.capstone.logic.match.ActivePlayerTracker;
 import com.shepherdjerred.capstone.logic.match.Match;
-import com.shepherdjerred.capstone.logic.match.MatchSettings.PlayerCount;
-import com.shepherdjerred.capstone.logic.player.PlayerId;
+import com.shepherdjerred.capstone.logic.player.PlayerCount;
+import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import lombok.ToString;
 
 @ToString
 public class WallsNearbyEnemyEvaluatorRule implements EvaluatorRule {
 
   @Override
-  public double evaluate(Match match, PlayerId playerToOptimize) {
+  public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
     double scoreValue;
     double bonuses = 0;
-    PlayerCount numberOfPlayers = match.getMatchSettings().getBoardSettings().getPlayerCount();
-    boolean Player1 = match.getMatchSettings().getStartingPlayerId().equals(playerToOptimize);
+    PlayerCount numberOfPlayers = match.getMatchSettings().getPlayerCount();
+    boolean Player1 = match.getMatchSettings().getStartingQuoridorPlayer().equals(playerToOptimize);
 
     if(numberOfPlayers.equals(PlayerCount.TWO)) {
-      PlayerId opponent = new ActivePlayerTracker()
-          .getNextActivePlayer(playerToOptimize, PlayerCount.TWO);
+      QuoridorPlayer opponent = match.getNextActivePlayerId();
       Coordinate opponentLocation = match.getBoard().getPawnLocation(opponent);
       if (match.getBoard().hasWall(opponentLocation.above(3))) {
         bonuses++;
