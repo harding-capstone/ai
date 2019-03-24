@@ -1,14 +1,13 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import com.shepherdjerred.capstone.logic.board.Coordinate;
-import com.shepherdjerred.capstone.logic.match.ActivePlayerTracker;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import lombok.ToString;
 
 @ToString
-public class RemainingWallsEvaluatorRule implements EvaluatorRule {
+public class WallsNearbyEnemyEvaluatorRule implements EvaluatorRule {
 
   @Override
   public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
@@ -18,8 +17,7 @@ public class RemainingWallsEvaluatorRule implements EvaluatorRule {
     boolean Player1 = match.getMatchSettings().getStartingQuoridorPlayer().equals(playerToOptimize);
 
     if(numberOfPlayers.equals(PlayerCount.TWO)) {
-      QuoridorPlayer opponent = new ActivePlayerTracker(playerToOptimize, PlayerCount.TWO)
-          .getNextActivePlayerId();
+      QuoridorPlayer opponent = match.getNextActivePlayerId();
       Coordinate opponentLocation = match.getBoard().getPawnLocation(opponent);
       if (match.getBoard().hasWall(opponentLocation.above(3))) {
         bonuses++;
