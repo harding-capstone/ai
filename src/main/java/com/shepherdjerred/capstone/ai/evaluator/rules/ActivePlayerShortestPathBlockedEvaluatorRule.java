@@ -1,8 +1,10 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
+import com.github.bentorfs.ai.search.asearch.AStarSearchNode;
 import com.shepherdjerred.capstone.logic.board.Coordinate;
 import com.shepherdjerred.capstone.logic.board.QuoridorBoard;
 import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
+import com.shepherdjerred.capstone.logic.board.search.BoardAStarSearchNode;
 import com.shepherdjerred.capstone.logic.board.search.BoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
@@ -21,17 +23,23 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule {
   Check the end of the path to see if a wall can be placed there to completely block it
    */
 
-  public double evaluate (Match match, QuoridorPlayer playerToOptimize) {
+  public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
     double score = 100;
     QuoridorBoard gameBoard = match.getBoard();
     BoardSearch gameBoardSearch = new AStarBoardSearch();
-    Coordinate optimizingPlayerLocation = gameBoard.getPawnLocation(playerToOptimize);
     PlayerGoals goals = new PlayerGoals();
+    Set<Coordinate> playerToOptimizeGoals = goals.getGoalCoordinatesForPlayer(playerToOptimize, gameBoard.getGridSize());
 
-    Set<Coordinate> optimizingPlayerGoals =
-        goals.getGoalCoordinatesForPlayer(playerToOptimize, gameBoard.getGridSize());
-    int shortestPath = gameBoardSearch.getShortestPathToAnyDestination(gameBoard,
-        optimizingPlayerLocation, optimizingPlayerGoals);
+
+    //I'm not sure what's going on, commented this out because it doesn't work
+    //BoardAStarSearchNode destination = playerToOptimizeGoals
+
+
+    Coordinate playerToOptimizeLocation = gameBoard.getPawnLocation(playerToOptimize);
+
+
+    //Coordinate endSpace = destination.getLocation();
+    //Coordinate endSpaceParent = destination.getParent().getLocation();
 
     return score;
   }
