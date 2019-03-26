@@ -8,13 +8,13 @@ import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 
-public class OpponentShortestPathBlockedEvaluatorRule {
+public class OpponentShortestPathBlockedEvaluatorRule implements EvaluatorRule {
   /*
   If our opponent(s)'s shortest path can be blocked with a single wall so that it no longer reaches
   the goal state, good.
    */
 
-  public double blockOpponentPath (Match match, QuoridorPlayer playerToOptimize) {
+  public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
     double blockScore = 0;
   /*
   get opponent's shortest path,
@@ -29,64 +29,62 @@ public class OpponentShortestPathBlockedEvaluatorRule {
   will have to see how it plays.
    */
 
-  QuoridorPlayer opponent = match.getNextActivePlayerId();
-  PlayerGoals playerGoals = new PlayerGoals();
-  QuoridorBoard gameBoard = match.getBoard();
-  BoardSearch gameBoardSearch = new AStarBoardSearch();
-  Coordinate playerToOptimizeLocation = gameBoard.getPawnLocation(playerToOptimize);
-  Coordinate behindLeft1 = playerToOptimizeLocation.toLeft(2).below();
-  Coordinate behindLeft2 = playerToOptimizeLocation.toLeft();
+    QuoridorPlayer opponent = match.getNextActivePlayerId();
+    PlayerGoals playerGoals = new PlayerGoals();
+    QuoridorBoard gameBoard = match.getBoard();
+    BoardSearch gameBoardSearch = new AStarBoardSearch();
+    Coordinate playerToOptimizeLocation = gameBoard.getPawnLocation(playerToOptimize);
+    Coordinate behindLeft1 = playerToOptimizeLocation.toLeft(2).below();
+    Coordinate behindLeft2 = playerToOptimizeLocation.toLeft();
 
-  int startRow;
-  if (playerToOptimize == QuoridorPlayer.ONE) {
-    startRow = 0;
+    int startRow;
+    if (playerToOptimize == QuoridorPlayer.ONE) {
+      startRow = 0;
 
-    for ( int row = startRow + 1; row < playerToOptimizeLocation.getY(); row+=2) {
+      for (int row = startRow + 1; row < playerToOptimizeLocation.getY(); row += 2) {
 
-      for (int col = 0; col < gameBoard.getGridSize() - 10; col+=2) {
-        //gridSize - 10 is so that I don't go out of bounds
+        for (int col = 0; col < gameBoard.getGridSize() - 10; col += 2) {
+          //gridSize - 10 is so that I don't go out of bounds
 
-        Coordinate wallSlot1 = new Coordinate(col, row);
-        Coordinate wallSlot2 = wallSlot1.toRight(2);
-        Coordinate wallSpace1 = wallSlot2.toRight(2);
-        Coordinate wallSpace2 = wallSpace1.toRight(2);
-        Coordinate secondWallSlot1 = wallSpace2.toRight(2);
-        Coordinate secondWallSlot2 = secondWallSlot1.toRight(2);
+          Coordinate wallSlot1 = new Coordinate(col, row);
+          Coordinate wallSlot2 = wallSlot1.toRight(2);
+          Coordinate wallSpace1 = wallSlot2.toRight(2);
+          Coordinate wallSpace2 = wallSpace1.toRight(2);
+          Coordinate secondWallSlot1 = wallSpace2.toRight(2);
+          Coordinate secondWallSlot2 = secondWallSlot1.toRight(2);
 
-        if(gameBoard.hasWall(wallSlot1) && gameBoard.hasWall(wallSlot2)
-            && gameBoard.isEmpty(wallSpace1) && gameBoard.isEmpty(wallSpace2)
-            && gameBoard.hasWall(secondWallSlot1) && gameBoard.hasWall(secondWallSlot2)) {
-          blockScore++;
+          if (gameBoard.hasWall(wallSlot1) && gameBoard.hasWall(wallSlot2)
+              && gameBoard.isEmpty(wallSpace1) && gameBoard.isEmpty(wallSpace2)
+              && gameBoard.hasWall(secondWallSlot1) && gameBoard.hasWall(secondWallSlot2)) {
+            blockScore++;
+          }
+        }
+      }
+
+
+    }
+    else {
+      startRow = gameBoard.getGridSize();
+
+      for (int row = startRow - 1; row > playerToOptimizeLocation.getY(); row -= 2) {
+
+        for (int col = 0; col < gameBoard.getGridSize() - 10; col += 2) {
+
+          Coordinate wallSlot1 = new Coordinate(col, row);
+          Coordinate wallSlot2 = wallSlot1.toRight(2);
+          Coordinate wallSpace1 = wallSlot2.toRight(2);
+          Coordinate wallSpace2 = wallSpace1.toRight(2);
+          Coordinate secondWallSlot1 = wallSpace2.toRight(2);
+          Coordinate secondWallSlot2 = secondWallSlot1.toRight(2);
+
+          if (gameBoard.hasWall(wallSlot1) && gameBoard.hasWall(wallSlot2)
+              && gameBoard.isEmpty(wallSpace1) && gameBoard.isEmpty(wallSpace2)
+              && gameBoard.hasWall(secondWallSlot1) && gameBoard.hasWall(secondWallSlot2)) {
+            blockScore++;
+          }
         }
       }
     }
-
-
-  } else {
-    startRow = gameBoard.getGridSize();
-
-    for (int row = startRow - 1; row > playerToOptimizeLocation.getY(); row -= 2) {
-
-      for (int col = 0; col < gameBoard.getGridSize() - 10; col += 2) {
-
-        Coordinate wallSlot1 = new Coordinate(col, row);
-        Coordinate wallSlot2 = wallSlot1.toRight(2);
-        Coordinate wallSpace1 = wallSlot2.toRight(2);
-        Coordinate wallSpace2 = wallSpace1.toRight(2);
-        Coordinate secondWallSlot1 = wallSpace2.toRight(2);
-        Coordinate secondWallSlot2 = secondWallSlot1.toRight(2);
-
-        if (gameBoard.hasWall(wallSlot1) && gameBoard.hasWall(wallSlot2)
-            && gameBoard.isEmpty(wallSpace1) && gameBoard.isEmpty(wallSpace2)
-            && gameBoard.hasWall(secondWallSlot1) && gameBoard.hasWall(secondWallSlot2)) {
-          blockScore++;
-        }
-      }
-    }
-  }
-
-
-
 
     return blockScore;
   }

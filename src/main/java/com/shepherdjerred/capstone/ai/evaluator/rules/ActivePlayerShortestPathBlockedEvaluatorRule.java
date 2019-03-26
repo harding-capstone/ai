@@ -1,18 +1,20 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
-import com.github.bentorfs.ai.search.asearch.AStarSearchNode;
 import com.shepherdjerred.capstone.logic.board.Coordinate;
 import com.shepherdjerred.capstone.logic.board.QuoridorBoard;
-import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.board.search.BoardAStarSearchNode;
 import com.shepherdjerred.capstone.logic.board.search.BoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
-import java.util.Set;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
+public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRule {
 
-public class ActivePlayerShortestPathBlockedEvaluatorRule {
+  private final BoardSearch boardSearch;
+  private final PlayerGoals playerGoals;
+
   /*
   If the shortest path can be blocked off by a single wall placement (legally) so that the player
   can no longer reach the goal on that path, that's very bad and we'll have to backtrack. If that's
@@ -24,24 +26,53 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule {
    */
 
   public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
-    double score = 100;
     QuoridorBoard gameBoard = match.getBoard();
-    BoardSearch gameBoardSearch = new AStarBoardSearch();
-    PlayerGoals goals = new PlayerGoals();
-    Set<Coordinate> playerToOptimizeGoals = goals.getGoalCoordinatesForPlayer(playerToOptimize, gameBoard.getGridSize());
+
+    var playerPawnLocation = gameBoard.getPawnLocation(playerToOptimize);
+    var playerPawnGoals = playerGoals.getGoalCoordinatesForPlayer(playerToOptimize, gameBoard.getBoardSize());
+    var shortestPath = (BoardAStarSearchNode) boardSearch.getPathToAnyDestination(gameBoard, playerPawnLocation, playerPawnGoals);
+
+    Coordinate endSpace = shortestPath.getParent().getLocation();
+    Coordinate endSpaceParent = shortestPath.getParent().getParent().getLocation();
 
 
-    //I'm not sure what's going on, commented this out because it doesn't work
-    //BoardAStarSearchNode destination = playerToOptimizeGoals
+    int canBeBlocked = 0;
 
+    while (canBeBlocked == 0 && endSpaceParent != null) {
+      Coordinate wallLeft = endSpace.toLeft();
+      Coordinate wallLeft2 = wallLeft.toLeft(2);
+      Coordinate wallRight = endSpace.toRight();
+      Coordinate wallRight2 = wallRight.toRight(2);
+      Coordinate wallAbove = endSpace.above();
+      Coordinate wallAboveLeft = wallAbove.toLeft(2);
+      Coordinate wallAboveRight = wallAbove.toRight(2);
 
-    Coordinate playerToOptimizeLocation = gameBoard.getPawnLocation(playerToOptimize);
+      if (endSpace.getX() > 3 && endSpace.getX() < gameBoard.getGridSize() - 3
+          && ((gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)
+          && gameBoard.isEmpty(wallAbove)
+          && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
+          ||
+          (gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight))
+          || (gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)))) {
+        canBeBlocked++;
+      }
 
+      //Edge cases, endpath is on the edges of the board: 0, 2, gridsize, gridsize - 2
 
-    //Coordinate endSpace = destination.getLocation();
-    //Coordinate endSpaceParent = destination.getParent().getLocation();
+      else if (endSpace.getX() < 3 || endSpace.getX() > gameBoard.getGridSize() - 3) {
+        if (endSpace.getX() == 0
+            && (gameBoard.hasPiece(wallRight) || gameBoard.hasPiece(wallRight2))
+            && gameBoard.isEmpty(wallAbove)
+            && gameBoard.isEmpty(wallAboveRight)) {
+          canBeBlocked++;
+        }
 
-    return score;
+      }
+    }
+
+    return canBeBlocked;
   }
 
 }

@@ -1,46 +1,43 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
-import com.shepherdjerred.capstone.logic.board.Coordinate;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.ToString;
 
+// TODO add configurable radius
 @ToString
 public class WallsNearbyEnemyEvaluatorRule implements EvaluatorRule {
 
   @Override
   public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
-    double scoreValue;
-    double bonuses = 0;
-    PlayerCount numberOfPlayers = match.getMatchSettings().getPlayerCount();
-    boolean Player1 = match.getMatchSettings().getStartingQuoridorPlayer().equals(playerToOptimize);
-
-    if(numberOfPlayers.equals(PlayerCount.TWO)) {
-      QuoridorPlayer opponent = match.getNextActivePlayerId();
-      Coordinate opponentLocation = match.getBoard().getPawnLocation(opponent);
-      if (match.getBoard().hasWall(opponentLocation.above(3))) {
-        bonuses++;
-      }
-
-      if (match.getBoard().hasWall(opponentLocation.toLeft(3))) {
-        bonuses++;
-      }
-
-      if (match.getBoard().hasWall(opponentLocation.toRight(3))) {
-        bonuses++;
-      }
-
-      if (match.getBoard().hasWall(opponentLocation.below(3))) {
-        bonuses++;
-      }
-    } else {
-      // TODO
-      //4 Player game, need to determine which player PTO is, then loop through the others and get
-      // a score. May be able to do that without knowing which player PTO is actually.
+    if (match.getActivePlayerId().equals(playerToOptimize)) {
+      return 0;
     }
 
-    scoreValue = 100 - bonuses * 33.3;
-    return scoreValue;
+    PlayerCount numberOfPlayers = match.getMatchSettings().getPlayerCount();
+    Set<QuoridorPlayer> otherPlayers = new HashSet<>();
+
+    if (numberOfPlayers == PlayerCount.TWO) {
+      otherPlayers.add(match.getNextActivePlayerId());
+    } else {
+      otherPlayers.add(QuoridorPlayer.ONE);
+      otherPlayers.add(QuoridorPlayer.TWO);
+      otherPlayers.add(QuoridorPlayer.THREE);
+      otherPlayers.add(QuoridorPlayer.FOUR);
+      otherPlayers.remove(match.getActivePlayerId());
+    }
+
+    var board = match.getBoard();
+    return otherPlayers.stream()
+        .map(player -> board.getPawnLocation(player))
+        .map(pawnLocation -> {
+          var adjacentWallLocations = board.getWallCellsAdjacentToPawnSpace(pawnLocation);
+          return adjacentWallLocations.stream().filter(board::hasPiece).count();
+        })
+        .mapToInt(Number::intValue)
+        .sum();
   }
 }

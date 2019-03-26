@@ -3,7 +3,7 @@ package com.shepherdjerred.capstone.ai.evaluator.rules;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 
-public class SharedShortestPathWithOpponentEvaluatorRule {
+public class SharedShortestPathWithOpponentEvaluatorRule implements EvaluatorRule {
   /*
   If the opponent(s) is located on the activePlayer's shortest path, and the opponent is closer to
   their goal than the activePlayer is to theirs, that's bad. They are potentially bottlenecked on
@@ -11,7 +11,7 @@ public class SharedShortestPathWithOpponentEvaluatorRule {
   But, if the activePlayer is closer to their goal than the opponent(s) is, that's good.
    */
 
-  public double opponentOnSamePath (Match match, QuoridorPlayer playerToOptimize) {
+  public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
     double pathScore;
 
     //call A* to find shortest path, put each move in a list
