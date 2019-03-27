@@ -18,6 +18,8 @@ public class SharedShortestPathWithOpponentEvaluatorRule implements EvaluatorRul
     //If any space has a piece, we know our opponent is on the path.
     //check to see who's closer to their goal (new function?)
 
+
+
     /*
     if (any other piece is on PTO's path) {
       if (playerToOptimize is closer) {

@@ -64,12 +64,41 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
       else if (endSpace.getX() < 3 || endSpace.getX() > gameBoard.getGridSize() - 3) {
         if (endSpace.getX() == 0
             && (gameBoard.hasPiece(wallRight) || gameBoard.hasPiece(wallRight2))
+            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight)) {
+          canBeBlocked++;
+        } else if (endSpace.getX() == 2
+            && ( (gameBoard.hasPiece(wallRight) && gameBoard.isEmpty(wallAbove)
+            && gameBoard.isEmpty(wallAboveLeft))
+
+            || (gameBoard.hasPiece(wallLeft) && gameBoard.hasPiece(wallRight)
             && gameBoard.isEmpty(wallAbove)
-            && gameBoard.isEmpty(wallAboveRight)) {
+            && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
+
+            || (gameBoard.hasPiece(wallLeft) && gameBoard.hasPiece(wallRight2)
+            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight))) ) {
+          canBeBlocked++;
+        } else if (endSpace.getX() == gameBoard.getGridSize()
+            && (gameBoard.hasPiece(wallLeft) || gameBoard.hasPiece(wallLeft2))
+            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)) {
+          canBeBlocked++;
+        } else if (endSpace.getX() == gameBoard.getGridSize() - 2
+            && ( (gameBoard.hasWall(wallLeft) && gameBoard.isEmpty(wallAbove)
+            && gameBoard.isEmpty(wallAboveRight))
+
+            || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft)
+            && gameBoard.isEmpty(wallAbove)
+            && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
+
+            || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft2)
+            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft))) ) {
           canBeBlocked++;
         }
 
       }
+
+      //Ran into a problem, need to be able to get the parent of whatever the previous node was,
+      //but it looks like that may take alot of computing time to do
+
     }
 
     return canBeBlocked;
