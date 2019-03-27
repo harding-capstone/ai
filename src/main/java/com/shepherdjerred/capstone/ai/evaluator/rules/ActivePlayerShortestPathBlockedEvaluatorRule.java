@@ -26,79 +26,116 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
    */
 
   public double evaluate(Match match, QuoridorPlayer playerToOptimize) {
+
     QuoridorBoard gameBoard = match.getBoard();
 
     var playerPawnLocation = gameBoard.getPawnLocation(playerToOptimize);
-    var playerPawnGoals = playerGoals.getGoalCoordinatesForPlayer(playerToOptimize, gameBoard.getBoardSize());
-    var shortestPath = (BoardAStarSearchNode) boardSearch.getPathToAnyDestination(gameBoard, playerPawnLocation, playerPawnGoals);
+    var playerPawnGoals = playerGoals.getGoalCoordinatesForPlayer(playerToOptimize,
+        gameBoard.getBoardSize());
+    var shortestPath = (BoardAStarSearchNode) boardSearch.getPathToAnyDestination(gameBoard,
+        playerPawnLocation, playerPawnGoals);
+   // shortestPath = shortestPath.getParent();
 
-    Coordinate endSpace = shortestPath.getParent().getLocation();
-    Coordinate endSpaceParent = shortestPath.getParent().getParent().getLocation();
+    Coordinate endSpace = shortestPath.getLocation();
+    Coordinate endSpaceParent = shortestPath.getParent().getLocation();
 
 
-    int canBeBlocked = 0;
+    double canBeBlocked = 0;
 
     while (canBeBlocked == 0 && endSpaceParent != null) {
-      Coordinate wallLeft = endSpace.toLeft();
-      Coordinate wallLeft2 = wallLeft.toLeft(2);
-      Coordinate wallRight = endSpace.toRight();
-      Coordinate wallRight2 = wallRight.toRight(2);
       Coordinate wallAbove = endSpace.above();
       Coordinate wallAboveLeft = wallAbove.toLeft(2);
       Coordinate wallAboveRight = wallAbove.toRight(2);
+      Coordinate wallBelow = endSpace.below();
+      Coordinate wallBelowLeft = wallBelow.toLeft(2);
+      Coordinate wallBelowRight = wallBelow.toRight(2);
+      Coordinate wallUpLeft = endSpace.toLeft().above(2);
+      Coordinate wallUpRight = endSpace.toRight().above(2);
+      Coordinate wallDownLeft = endSpace.toLeft().below(2);
+      Coordinate wallDownRight = endSpace.toRight().below(2);
 
-      if (endSpace.getX() > 3 && endSpace.getX() < gameBoard.getGridSize() - 3
-          && ((gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)
-          && gameBoard.isEmpty(wallAbove)
-          && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
-          ||
-          (gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)
-              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight))
-          || (gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)
-              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)))) {
+
+      if (endSpaceParent.above(2).equals(endSpace)
+          && (gameBoard.isEmpty(wallBelowLeft) || gameBoard.isEmpty(wallBelowRight)) ) {
+        canBeBlocked++;
+      } else if (endSpaceParent.below(2).equals(endSpace)
+          && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)) ) {
+        canBeBlocked++;
+      } else if (endSpaceParent.toLeft(2).equals(endSpace)
+          && (gameBoard.isEmpty(wallUpRight) || gameBoard.isEmpty(wallDownRight)) ) {
+        canBeBlocked++;
+      } else if (endSpaceParent.toRight(2).equals(endSpace)
+          && (gameBoard.isEmpty(wallUpLeft) || gameBoard.isEmpty(wallDownLeft)) ) {
         canBeBlocked++;
       }
 
-      //Edge cases, endpath is on the edges of the board: 0, 2, gridsize, gridsize - 2
+      shortestPath = shortestPath.getParent();
+      endSpace = shortestPath.getLocation();
+      endSpaceParent = shortestPath.getParent().getLocation();
 
-      else if (endSpace.getX() < 3 || endSpace.getX() > gameBoard.getGridSize() - 3) {
-        if (endSpace.getX() == 0
-            && (gameBoard.hasPiece(wallRight) || gameBoard.hasPiece(wallRight2))
-            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight)) {
-          canBeBlocked++;
-        } else if (endSpace.getX() == 2
-            && ( (gameBoard.hasPiece(wallRight) && gameBoard.isEmpty(wallAbove)
-            && gameBoard.isEmpty(wallAboveLeft))
 
-            || (gameBoard.hasPiece(wallLeft) && gameBoard.hasPiece(wallRight)
+/*
+      if (playerToOptimize.equals(QuoridorPlayer.ONE)) {
+        if (endSpace.getX() > 3 && endSpace.getX() < gameBoard.getGridSize() - 3
+            && ((gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)
             && gameBoard.isEmpty(wallAbove)
             && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
-
-            || (gameBoard.hasPiece(wallLeft) && gameBoard.hasPiece(wallRight2)
-            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight))) ) {
-          canBeBlocked++;
-        } else if (endSpace.getX() == gameBoard.getGridSize()
-            && (gameBoard.hasPiece(wallLeft) || gameBoard.hasPiece(wallLeft2))
-            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)) {
-          canBeBlocked++;
-        } else if (endSpace.getX() == gameBoard.getGridSize() - 2
-            && ( (gameBoard.hasWall(wallLeft) && gameBoard.isEmpty(wallAbove)
-            && gameBoard.isEmpty(wallAboveRight))
-
-            || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft)
-            && gameBoard.isEmpty(wallAbove)
-            && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
-
-            || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft2)
-            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft))) ) {
+            ||
+            (gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)
+                && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight))
+            || (gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)
+            && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)))) {
           canBeBlocked++;
         }
 
+        //Edge cases, endpath is on the edges of the board: 0, 2, gridsize, gridsize - 2
+        else if (endSpace.getX() < 3 || endSpace.getX() > gameBoard.getGridSize() - 3) {
+          if (endSpace.getX() == 0
+              && (gameBoard.hasWall(wallRight) || gameBoard.hasWall(wallRight2))
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight)) {
+            canBeBlocked++;
+          }
+          else if (endSpace.getX() == 2
+              && ((gameBoard.hasWall(wallRight) && gameBoard.isEmpty(wallAbove)
+              && gameBoard.isEmpty(wallAboveLeft))
+
+              || (gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)
+              && gameBoard.isEmpty(wallAbove)
+              && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
+
+              || (gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveRight)))) {
+            canBeBlocked++;
+          }
+          else if (endSpace.getX() == gameBoard.getGridSize()
+              && (gameBoard.hasWall(wallLeft) || gameBoard.hasWall(wallLeft2))
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)) {
+            canBeBlocked++;
+          }
+          else if (endSpace.getX() == gameBoard.getGridSize() - 2
+              && ((gameBoard.hasWall(wallLeft) && gameBoard.isEmpty(wallAbove)
+              && gameBoard.isEmpty(wallAboveRight))
+
+              || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft)
+              && gameBoard.isEmpty(wallAbove)
+              && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)))
+
+              || (gameBoard.hasWall(wallRight) && gameBoard.hasWall(wallLeft2)
+              && gameBoard.isEmpty(wallAbove) && gameBoard.isEmpty(wallAboveLeft)))) {
+            canBeBlocked++;
+          }
+
+        } else if (endSpace.getY() > 3 && endSpace.getY() < endSpace.getY() - 3)
+
+        //may take alot of computing time to do
+        shortestPath = shortestPath.getParent();
+        endSpace = shortestPath.getLocation();
+        endSpaceParent = shortestPath.getParent().getLocation();
+
+      } else if (playerToOptimize.equals(QuoridorPlayer.TWO)) {
+
       }
-
-      //Ran into a problem, need to be able to get the parent of whatever the previous node was,
-      //but it looks like that may take alot of computing time to do
-
+*/
     }
 
     return canBeBlocked;
