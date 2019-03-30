@@ -37,12 +37,14 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
    // shortestPath = shortestPath.getParent();
 
     Coordinate endSpace = shortestPath.getLocation();
-    Coordinate endSpaceParent = shortestPath.getParent().getLocation();
+    var endSpaceParentNode = shortestPath.getParent();
+    Coordinate endSpaceParent = endSpaceParentNode.getLocation();
+
 
 
     double canBeBlocked = 0;
 
-    while (canBeBlocked == 0 && endSpaceParent != null) {
+    while (canBeBlocked == 0 && endSpaceParentNode != null) {
       Coordinate wallAbove = endSpace.above();
       Coordinate wallAboveLeft = wallAbove.toLeft(2);
       Coordinate wallAboveRight = wallAbove.toRight(2);
@@ -71,7 +73,8 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
 
       shortestPath = shortestPath.getParent();
       endSpace = shortestPath.getLocation();
-      endSpaceParent = shortestPath.getParent().getLocation();
+      endSpaceParentNode = shortestPath.getParent();
+      endSpaceParent = endSpaceParentNode.getLocation();
 
 
 /*

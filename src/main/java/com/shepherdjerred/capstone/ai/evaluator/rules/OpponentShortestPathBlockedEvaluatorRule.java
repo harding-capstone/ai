@@ -55,9 +55,10 @@ public class OpponentShortestPathBlockedEvaluatorRule implements EvaluatorRule {
       //shortestPath = shortestPath.getParent();
 
       Coordinate endSpace = shortestPath.getLocation();
-      Coordinate endSpaceParent = shortestPath.getParent().getLocation();
+      var endSpaceParentNode = shortestPath.getParent();
+      Coordinate endSpaceParent = endSpaceParentNode.getLocation();
 
-      while (endSpaceParent != null) {
+      while (endSpaceParentNode != null) {
         Coordinate wallAbove = endSpace.above();
         Coordinate wallAboveLeft = wallAbove.toLeft(2);
         Coordinate wallAboveRight = wallAbove.toRight(2);
@@ -85,7 +86,8 @@ public class OpponentShortestPathBlockedEvaluatorRule implements EvaluatorRule {
 
         shortestPath = shortestPath.getParent();
         endSpace = shortestPath.getLocation();
-        endSpaceParent = shortestPath.getParent().getLocation();
+        endSpaceParentNode = shortestPath.getParent();
+        endSpaceParent = endSpaceParentNode.getLocation();
 
 
       }
