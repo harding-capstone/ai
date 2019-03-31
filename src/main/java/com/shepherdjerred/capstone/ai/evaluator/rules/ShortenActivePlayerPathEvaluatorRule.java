@@ -7,7 +7,9 @@ import com.shepherdjerred.capstone.logic.board.search.BoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class ShortenActivePlayerPathEvaluatorRule implements EvaluatorRule {
 
   private final BoardSearch boardSearch;
