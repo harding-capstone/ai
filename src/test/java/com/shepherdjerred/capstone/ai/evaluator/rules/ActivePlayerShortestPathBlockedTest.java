@@ -1,18 +1,20 @@
 package com.shepherdjerred.capstone.ai.evaluator.rules;
 
 import static org.junit.Assert.assertEquals;
+
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
 import com.shepherdjerred.capstone.logic.board.Coordinate;
 import com.shepherdjerred.capstone.logic.board.WallLocation;
-import com.shepherdjerred.capstone.logic.board.search.BoardSearch;
+import com.shepherdjerred.capstone.logic.board.search.AStarBoardSearch;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchSettings;
 import com.shepherdjerred.capstone.logic.match.PlayerGoals;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import com.shepherdjerred.capstone.logic.turn.PlaceWallTurn;
-//import lombok.AllArgsConstructor;
 import org.junit.Test;
+
+//import lombok.AllArgsConstructor;
 
 
 public class ActivePlayerShortestPathBlockedTest {
@@ -61,7 +63,7 @@ public class ActivePlayerShortestPathBlockedTest {
     System.out.println(match.getBoard().getPieceLocations());
     System.out.println(match.getMatchStatus());
 
-    BoardSearch boardSearch;
+    AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
     var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
@@ -71,6 +73,7 @@ public class ActivePlayerShortestPathBlockedTest {
 
     assertEquals(expected, actual, 0);
 
+    System.out.println(actual);
   }
 
 
