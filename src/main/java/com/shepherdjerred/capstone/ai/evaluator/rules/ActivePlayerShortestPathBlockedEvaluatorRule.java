@@ -74,7 +74,10 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
       shortestPath = shortestPath.getParent();
       endSpace = shortestPath.getLocation();
       endSpaceParentNode = shortestPath.getParent();
-      endSpaceParent = endSpaceParentNode.getLocation();
+
+      if (endSpaceParentNode != null) {
+        endSpaceParent = endSpaceParentNode.getLocation();
+      }
 
 
 /*

@@ -394,7 +394,7 @@ public class ActivePlayerShortestPathBlockedTest {
 
   @Test
   public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottom() {
-    Coordinate rightBottom = new Coordinate(0, 8);
+    Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = rightBottom.toLeft(2);
 
@@ -428,7 +428,7 @@ public class ActivePlayerShortestPathBlockedTest {
 
   @Test
   public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomPlus1() {
-    Coordinate rightBottom = new Coordinate(0, 8);
+    Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = rightBottom.toLeft(2).above(2);
 
