@@ -59,7 +59,7 @@ public class SharedShortestPathWithOpponentEvaluatorRule implements EvaluatorRul
     for (QuoridorPlayer player : otherPlayers) {
 
       while (pathScore == 0 && endSpaceParentNode != null) {
-        if (endSpace == gameBoard.getPawnLocation(player)) {
+        if (endSpace.equals(gameBoard.getPawnLocation(player))) {
           pathScore++;
         }
 

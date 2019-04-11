@@ -17,10 +17,7 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
 
   /*
   If the shortest path can be blocked off by a single wall placement (legally) so that the player
-  can no longer reach the goal on that path, that's very bad and we'll have to backtrack. If that's
-  the case, don't follow the shortest path, get the next-best path (probably with a loop so that
-  while (possible block)
-    { try the next path }
+  can no longer reach the goal on that path, that's very bad and we'll have to backtrack.
 
   Check the end of the path to see if a wall can be placed there to completely block it
    */
@@ -56,12 +53,14 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
       Coordinate wallDownLeft = endSpace.toLeft().below(2);
       Coordinate wallDownRight = endSpace.toRight().below(2);
 
-
+//TODO Fix the rest of these (left, right, below) like above; Watch for Out of Bounds
       if (endSpaceParent.above(2).equals(endSpace)
-          && (gameBoard.isEmpty(wallBelowLeft) || gameBoard.isEmpty(wallBelowRight)) ) {
+          && ((gameBoard.isEmpty(wallBelowLeft) && gameBoard.hasWall(wallDownRight))
+          || (gameBoard.isEmpty(wallBelowRight) && gameBoard.hasWall(wallDownLeft))) ) {
         canBeBlocked++;
       } else if (endSpaceParent.below(2).equals(endSpace)
-          && (gameBoard.isEmpty(wallAboveLeft) || gameBoard.isEmpty(wallAboveRight)) ) {
+          && ((gameBoard.isEmpty(wallAboveLeft) && gameBoard.hasWall(wallUpRight))
+          || (gameBoard.isEmpty(wallAboveRight) && gameBoard.hasWall(wallUpLeft))) ) {
         canBeBlocked++;
       } else if (endSpaceParent.toLeft(2).equals(endSpace)
           && (gameBoard.isEmpty(wallUpRight) || gameBoard.isEmpty(wallDownRight)) ) {
