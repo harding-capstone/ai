@@ -4,11 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import com.shepherdjerred.capstone.logic.board.BoardSettings;
 import com.shepherdjerred.capstone.logic.board.Coordinate;
+import com.shepherdjerred.capstone.logic.board.WallLocation;
 import com.shepherdjerred.capstone.logic.match.Match;
 import com.shepherdjerred.capstone.logic.match.MatchSettings;
 import com.shepherdjerred.capstone.logic.player.PlayerCount;
 import com.shepherdjerred.capstone.logic.player.QuoridorPlayer;
 import com.shepherdjerred.capstone.logic.turn.NormalMovePawnTurn;
+import com.shepherdjerred.capstone.logic.turn.PlaceWallTurn;
 import org.junit.Test;
 
 public class AdjacentPawnsTest {
@@ -106,6 +108,61 @@ public class AdjacentPawnsTest {
 
     var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (long) 3;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
+  public void evaluate_AdjacentPawnsTest_whenP1IsNotTheActivePlayer() {
+
+    Coordinate topMid = new Coordinate(8, 16);
+    Coordinate playerLocation = new Coordinate(8, 0);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.TWO),
+        new BoardSettings(9, PlayerCount.TWO));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.TWO, topMid, playerLocation.above(2)));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new AdjacentPawnsEvaluationRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = 0;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  //TODO fix when wall is blocking players, should return 0
+  @Test
+  public void evaluate_AdjacentPawnsTest_whenWallBlocksP1FromP2() {
+
+    Coordinate topMid = new Coordinate(8, 16);
+    Coordinate playerLocation = new Coordinate(8, 0);
+    WallLocation wall = new WallLocation(playerLocation.above(),
+        playerLocation.above().toLeft(), playerLocation.above().toLeft(2));
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.TWO),
+        new BoardSettings(9, PlayerCount.TWO));
+
+    match = match.doTurnUnchecked(new PlaceWallTurn(QuoridorPlayer.ONE, wall));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.TWO, topMid, playerLocation.above(2)));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new AdjacentPawnsEvaluationRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = 0;
 
     System.out.println(actual);
 

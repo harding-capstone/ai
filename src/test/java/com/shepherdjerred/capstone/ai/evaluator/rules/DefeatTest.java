@@ -39,6 +39,52 @@ public class DefeatTest {
   }
 
   @Test
+  public void evaluate_DefeatTest_WhenP2HasReachedTheLeftCornerGoal() {
+    Coordinate topMid = new Coordinate(8, 16);
+    Coordinate bottomLeftCorner = new Coordinate(0, 0);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.TWO),
+        new BoardSettings(9, PlayerCount.TWO));
+
+    match = match.doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.TWO, topMid, bottomLeftCorner));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
+  public void evaluate_DefeatTest_WhenP2HasReachedTheRightCornerGoal() {
+    Coordinate topMid = new Coordinate(8, 16);
+    Coordinate bottomRightCorner = new Coordinate(16, 0);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.TWO),
+        new BoardSettings(9, PlayerCount.TWO));
+
+    match = match.doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.TWO, topMid, bottomRightCorner));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
   public void evaluate_DefeatTest_WhenP3hasReachedTheGoal() {
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate leftMid = new Coordinate(0, 8);
@@ -63,6 +109,54 @@ public class DefeatTest {
   }
 
   @Test
+  public void evaluate_DefeatTest_WhenP3hasReachedTheTopCornerGoal() {
+    Coordinate leftMid = new Coordinate(0, 8);
+    Coordinate topRightCorner = new Coordinate(16, 16);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.THREE, PlayerCount.FOUR),
+        new BoardSettings(9, PlayerCount.FOUR));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.THREE, leftMid, topRightCorner));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
+  public void evaluate_DefeatTest_WhenP3hasReachedTheBottomCornerGoal() {
+    Coordinate leftMid = new Coordinate(0, 8);
+    Coordinate bottomRightCorner = new Coordinate(16, 0);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.THREE, PlayerCount.FOUR),
+        new BoardSettings(9, PlayerCount.FOUR));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.THREE, leftMid, bottomRightCorner));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
   public void evaluate_DefeatTest_WhenP4hasReachedTheGoal() {
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate leftMid = new Coordinate(0, 8);
@@ -72,6 +166,54 @@ public class DefeatTest {
 
     match = match
         .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.FOUR, rightMid, leftMid.below(2)));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
+  public void evaluate_DefeatTest_WhenP4hasReachedTheTopCornerGoal() {
+    Coordinate rightMid = new Coordinate(16, 8);
+    Coordinate leftTopCorner = new Coordinate(0, 16);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.FOUR, PlayerCount.FOUR),
+        new BoardSettings(9, PlayerCount.FOUR));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.FOUR, rightMid, leftTopCorner));
+
+    System.out.println(match.getBoard().getPieceLocations());
+    System.out.println(match.getMatchStatus());
+
+    var rule = new DefeatEvaluatorRule();
+
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = -1_000_000.;
+
+    System.out.println(actual);
+
+    assertEquals(expected, actual, 0);
+  }
+
+  @Test
+  public void evaluate_DefeatTest_WhenP4hasReachedTheBottomCornerGoal() {
+    Coordinate rightMid = new Coordinate(16, 8);
+    Coordinate leftBotomCorner = new Coordinate(0, 0);
+
+    var match = Match.from(new MatchSettings(10, QuoridorPlayer.FOUR, PlayerCount.FOUR),
+        new BoardSettings(9, PlayerCount.FOUR));
+
+    match = match
+        .doTurnUnchecked(new NormalMovePawnTurn(QuoridorPlayer.FOUR, rightMid, leftBotomCorner));
 
     System.out.println(match.getBoard().getPieceLocations());
     System.out.println(match.getMatchStatus());
