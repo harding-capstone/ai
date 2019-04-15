@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class WallsNearbyTest {
   @Test
-  public void evaluate_WallsNearbyEnemyTest_whenEvaluatedPlayerIsNotActivePlayer() {
+  public void evaluate_WallsNearbyTest_whenEvaluatedPlayerIsNotActivePlayer() {
 
     Coordinate playerLocation = new Coordinate(8, 0);
     WallLocation wall = new WallLocation(playerLocation.above(),
@@ -41,7 +41,7 @@ public class WallsNearbyTest {
   }
 
   @Test
-  public void evaluate_WallsNearbyEnemyTest_whenWallIsFarFromPlayers() {
+  public void evaluate_WallsNearbyTest_whenWallIsFarFromPlayers() {
 
     Coordinate wallLocation = new Coordinate(8, 8);
     WallLocation wall = new WallLocation(wallLocation.above(),
@@ -67,7 +67,7 @@ public class WallsNearbyTest {
   }
 
   @Test
-  public void evaluate_WallsNearbyEnemyTest_whenP1Has1WallNearby() {
+  public void evaluate_WallsNearbyTest_whenP1Has1WallNearby() {
 
     Coordinate playerLocation = new Coordinate(8, 0);
     WallLocation wall = new WallLocation(playerLocation.above(),
@@ -93,7 +93,7 @@ public class WallsNearbyTest {
   }
 
   @Test
-  public void evaluate_WallsNearbyEnemyTest_whenP1Has2WallsNearby() {
+  public void evaluate_WallsNearbyTest_whenP1Has2WallsNearby() {
 
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = new Coordinate(8, 8);
@@ -125,7 +125,7 @@ public class WallsNearbyTest {
   }
 
   @Test
-  public void evaluate_WallsNearbyEnemyTest_whenP1Has3WallsNearby() {
+  public void evaluate_WallsNearbyTest_whenP1Has3WallsNearby() {
 
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = new Coordinate(8, 8);

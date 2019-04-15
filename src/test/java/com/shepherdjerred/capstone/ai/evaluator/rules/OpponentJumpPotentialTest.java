@@ -41,7 +41,7 @@ public class OpponentJumpPotentialTest {
   }
 
   @Test
-  public void evaluate_AdjacentPawnsTest_whenP1IsSurrounded() {
+  public void evaluate_OpponentJumpPotentialTest_whenP1IsSurrounded() {
 
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate leftMid = new Coordinate(0, 8);
@@ -83,7 +83,7 @@ public class OpponentJumpPotentialTest {
   }
 
   @Test
-  public void evaluate_AdjacentPawnsTest_whenP1IsSurroundedAgainstSide() {
+  public void evaluate_OpponentJumpPotentialTest_whenP1IsSurroundedAgainstSide() {
 
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate leftMid = new Coordinate(0, 8);
@@ -121,7 +121,7 @@ public class OpponentJumpPotentialTest {
 
   //TODO fix how it evaluates potential when a wall is in the way
   @Test
-  public void evaluate_AdjacentPawnsTest_whenP1IsSurroundedWithWallBlocking() {
+  public void evaluate_OpponentJumpPotentialTest_whenP1IsSurroundedWithWallBlocking() {
 
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate leftMid = new Coordinate(0, 8);

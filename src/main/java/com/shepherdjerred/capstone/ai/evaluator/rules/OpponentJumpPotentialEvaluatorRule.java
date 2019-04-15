@@ -13,9 +13,33 @@ public class OpponentJumpPotentialEvaluatorRule implements EvaluatorRule {
       return 0;
     }
 
+    double adjacentPawns = 0;
     var board = match.getBoard();
     var pawnLocation = board.getPawnLocation(player);
-    var adjacentPawnLocations = board.getPawnSpacesAdjacentToPawnSpace(pawnLocation);
-    return adjacentPawnLocations.stream().filter(board::hasPiece).count();
+
+    if (board.isCoordinateValid(pawnLocation.toLeft(2)) && board.isEmpty(pawnLocation.toLeft())
+        && board.hasPiece(pawnLocation.toLeft(2))) {
+      adjacentPawns++;
+    }
+
+    if (board.isCoordinateValid(pawnLocation.toRight(2)) && board.isEmpty(pawnLocation.toRight())
+        && board.hasPiece(pawnLocation.toRight(2))) {
+      adjacentPawns++;
+    }
+
+    if (board.isCoordinateValid(pawnLocation.above(2)) && board.isEmpty(pawnLocation.above())
+        && board.hasPiece(pawnLocation.above(2))) {
+      adjacentPawns++;
+    }
+
+    if (board.isCoordinateValid(pawnLocation.below(2)) && board.isEmpty(pawnLocation.below())
+        && board.hasPiece(pawnLocation.below(2))) {
+      adjacentPawns++;
+    }
+
+    return adjacentPawns;
   }
+
+
 }
+

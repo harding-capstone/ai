@@ -13,7 +13,6 @@ import org.junit.Test;
 
 public class DefeatTest {
 
-  //TODO Check the victory corners as well
   @Test
   public void evaluate_DefeatTest_WhenP2hasReachedTheGoal() {
     Coordinate topMid = new Coordinate(8, 16);

@@ -21,13 +21,13 @@ public class WallsNearbyEnemyEvaluatorRule implements EvaluatorRule {
     Set<QuoridorPlayer> otherPlayers = new HashSet<>();
 
     if (numberOfPlayers == PlayerCount.TWO) {
-      otherPlayers.add(match.getNextActivePlayerId());
+      otherPlayers.add(match.getActivePlayerId());
     } else {
       otherPlayers.add(QuoridorPlayer.ONE);
       otherPlayers.add(QuoridorPlayer.TWO);
       otherPlayers.add(QuoridorPlayer.THREE);
       otherPlayers.add(QuoridorPlayer.FOUR);
-      otherPlayers.remove(match.getActivePlayerId());
+      otherPlayers.remove(playerToOptimize);
     }
 
     var board = match.getBoard();
