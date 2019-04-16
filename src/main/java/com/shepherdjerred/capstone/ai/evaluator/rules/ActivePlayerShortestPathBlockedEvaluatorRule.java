@@ -42,18 +42,51 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
     double canBeBlocked = 0;
 
     while (canBeBlocked == 0 && endSpaceParentNode != null) {
-      Coordinate wallAbove = endSpace.above();
+      Coordinate wallAbove = endSpaceParent.above();
       Coordinate wallAboveLeft = wallAbove.toLeft(2);
+      Coordinate wallAbove1Left2 = wallAbove.toLeft(2);
+
       Coordinate wallAboveRight = wallAbove.toRight(2);
-      Coordinate wallBelow = endSpace.below();
+      Coordinate wallAbove1Right2 = wallAbove.toRight(2);
+
+      Coordinate wallBelow = endSpaceParent.below();
       Coordinate wallBelowLeft = wallBelow.toLeft(2);
       Coordinate wallBelowRight = wallBelow.toRight(2);
-      Coordinate wallUpLeft = endSpace.toLeft().above(2);
-      Coordinate wallUpRight = endSpace.toRight().above(2);
-      Coordinate wallDownLeft = endSpace.toLeft().below(2);
-      Coordinate wallDownRight = endSpace.toRight().below(2);
+      Coordinate wallUpLeft = endSpaceParent.toLeft().above(2);
+      Coordinate wallUpRight = endSpaceParent.toRight().above(2);
+      Coordinate wallDownLeft = endSpaceParent.toLeft().below(2);
+      Coordinate wallDownRight = endSpaceParent.toRight().below(2);
+      Coordinate wallLeft = endSpaceParent.toLeft();
+      Coordinate wallRight = endSpaceParent.toRight();
+      Coordinate wallLeft2 = endSpaceParent.toLeft(3);
+      Coordinate wallRight2 = endSpaceParent.toRight(3);
 
 //TODO Fix the rest of these (left, right, below) like above; Watch for Out of Bounds
+      if (endSpaceParent.above(2).equals(endSpace)) {
+
+        if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight)
+            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)) {
+          if ((gameBoard.isCoordinateValid(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right2))
+              || (gameBoard.isCoordinateValid(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left2))) {
+            canBeBlocked = 1;
+          }
+        }
+
+        if (gameBoard.isCoordinateValid(wallLeft2) && gameBoard.isCoordinateValid(wallRight)
+            && gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)) {
+          if (gameBoard.isCoordinateValid(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left2)) {
+            canBeBlocked = 1;
+          }
+        } else if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight2)
+            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)) {
+          if (gameBoard.isCoordinateValid(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right2)) {
+            canBeBlocked = 1;
+          }
+        }
+      }
+
+
+/*
       if (endSpaceParent.above(2).equals(endSpace)
           && ((gameBoard.isEmpty(wallBelowLeft) && gameBoard.hasWall(wallDownRight))
           || (gameBoard.isEmpty(wallBelowRight) && gameBoard.hasWall(wallDownLeft))) ) {
@@ -69,7 +102,7 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
           && (gameBoard.isEmpty(wallUpLeft) || gameBoard.isEmpty(wallDownLeft)) ) {
         canBeBlocked++;
       }
-
+*/
       shortestPath = shortestPath.getParent();
       endSpace = shortestPath.getLocation();
       endSpaceParentNode = shortestPath.getParent();

@@ -303,6 +303,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
   */
 
+/*
   @Test
   public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightMid() {
     Coordinate rightMid = new Coordinate(16, 8);
@@ -446,6 +447,6 @@ public class ActivePlayerShortestPathBlockedTest {
 
     assertEquals(expected, actual, 0);
   }
-
+*/
 
 }
