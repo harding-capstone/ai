@@ -15,13 +15,10 @@ import com.shepherdjerred.capstone.logic.turn.NormalMovePawnTurn;
 import com.shepherdjerred.capstone.logic.turn.PlaceWallTurn;
 import org.junit.Test;
 
-//import lombok.AllArgsConstructor;
-
-
-public class ActivePlayerShortestPathBlockedTest {
+public class OpponentShortestPathBlockedTest {
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsTopMid() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsTopMid() {
 
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate topRight = new Coordinate(16, 16);
@@ -51,9 +48,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -63,8 +60,8 @@ public class ActivePlayerShortestPathBlockedTest {
     //System.out.println(actual);
   }
 
-@Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsTopLeftForP1() {
+  @Test
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsTopLeftForP1() {
     Coordinate topLeft = new Coordinate(0, 16);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = topLeft.below(2);
@@ -86,9 +83,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -97,7 +94,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsTopLeftPlus1ForP1() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsTopLeftPlus1ForP1() {
     Coordinate topLeft = new Coordinate(0, 16);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = topLeft.below(2).toRight(2);
@@ -119,9 +116,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -130,7 +127,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsTopRightForP1() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsTopRightForP1() {
     Coordinate topRight = new Coordinate(16, 16);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = topRight.below(2);
@@ -152,9 +149,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -163,7 +160,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsTopRightMinus1ForP1() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsTopRightMinus1ForP1() {
     Coordinate topRight = new Coordinate(16, 16);
     Coordinate bottomMid = new Coordinate(8, 0);
     Coordinate playerLocation = topRight.below(2).toLeft(2);
@@ -185,9 +182,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -196,7 +193,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftBottomForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftBottomForP2() {
     Coordinate leftBottom = new Coordinate(0, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = leftBottom.above(2);
@@ -218,9 +215,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -229,7 +226,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftBottomAndWallIsSpacedOutForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftBottomAndWallIsSpacedOutForP2() {
     Coordinate leftBottom = new Coordinate(0, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = leftBottom.above(2);
@@ -251,9 +248,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -262,7 +259,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftBottomPlus1ForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftBottomPlus1ForP2() {
     Coordinate leftBottom = new Coordinate(0, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = leftBottom.toRight(2).above(2);
@@ -284,9 +281,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -295,7 +292,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightBottomForP2() {
     Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = rightBottom.above(2);
@@ -317,9 +314,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -328,7 +325,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomAndWallIsSpacedOutForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightBottomAndWallIsSpacedOutForP2() {
     Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = rightBottom.above(2);
@@ -350,9 +347,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -361,7 +358,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomPlus1ForP2() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightBottomPlus1ForP2() {
     Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate playerLocation = rightBottom.toLeft(2).above(2);
@@ -383,9 +380,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -394,7 +391,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsBottomMid() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsBottomMid() {
     Coordinate topMid = new Coordinate(8, 16);
     Coordinate topRight = new Coordinate(16, 16);
     Coordinate bottomMid = new Coordinate(8, 0);
@@ -421,9 +418,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.TWO);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -434,7 +431,7 @@ public class ActivePlayerShortestPathBlockedTest {
   //4P tests
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightMid() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightMid() {
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = rightMid.toLeft(2);
@@ -460,10 +457,10 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.THREE);
-    var expected = (double) 1;
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = (double) 2;
 
     System.out.println(actual);
 
@@ -471,7 +468,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightTopForP3() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightTopForP3() {
     Coordinate rightTop = new Coordinate(16, 16);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = rightTop.toLeft(2);
@@ -493,9 +490,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.THREE);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -504,7 +501,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightTopMinus1ForP3() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightTopMinus1ForP3() {
     Coordinate rightTop = new Coordinate(16, 16);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = rightTop.toLeft(2).below(2);
@@ -526,9 +523,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.THREE);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -537,7 +534,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomForP3() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightBottomForP3() {
     Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = rightBottom.toLeft(2);
@@ -559,9 +556,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.THREE);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -570,7 +567,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsRightBottomPlus1ForP3() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsRightBottomPlus1ForP3() {
     Coordinate rightBottom = new Coordinate(16, 0);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = rightBottom.toLeft(2).above(2);
@@ -592,9 +589,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.THREE);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -603,7 +600,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftMid() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftMid() {
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate leftMid = new Coordinate(0, 8);
     Coordinate playerLocation = leftMid.toRight(2);
@@ -629,10 +626,10 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.FOUR);
-    var expected = (double) 1;
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
+    var expected = (double) 2;
 
     System.out.println(actual);
 
@@ -640,7 +637,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftTopForP4() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftTopForP4() {
     Coordinate leftTop = new Coordinate(0, 16);
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate playerLocation = leftTop.toRight(2);
@@ -662,9 +659,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.FOUR);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -673,7 +670,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftTopMinus1ForP4() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftTopMinus1ForP4() {
     Coordinate leftTop = new Coordinate(0, 16);
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate playerLocation = leftTop.toRight(2).below(2);
@@ -695,9 +692,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.FOUR);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -706,7 +703,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftBottomForP4() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftBottomForP4() {
     Coordinate leftBottom = new Coordinate(0, 0);
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate playerLocation = leftBottom.toRight(2);
@@ -728,9 +725,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.FOUR);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -739,7 +736,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenGoalIsLeftBottomPlus1ForP4() {
+  public void evaluate_OpponentShortestPathBlocked_whenGoalIsLeftBottomPlus1ForP4() {
     Coordinate leftBottom = new Coordinate(0, 0);
     Coordinate rightMid = new Coordinate(16, 8);
     Coordinate playerLocation = leftBottom.toRight(2).above(2);
@@ -761,9 +758,9 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
-    var actual = rule.evaluate(match, QuoridorPlayer.FOUR);
+    var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = (double) 1;
 
     System.out.println(actual);
@@ -772,7 +769,7 @@ public class ActivePlayerShortestPathBlockedTest {
   }
 
   @Test
-  public void evaluate_ActivePlayerShortestPathBlocked_whenNoWallsArePlaced() {
+  public void evaluate_OpponentShortestPathBlocked_whenNoWallsArePlaced() {
 
     var match = Match.from(new MatchSettings(10, QuoridorPlayer.ONE, PlayerCount.FOUR),
         new BoardSettings(9, PlayerCount.FOUR));
@@ -783,7 +780,7 @@ public class ActivePlayerShortestPathBlockedTest {
     AStarBoardSearch boardSearch = new AStarBoardSearch();
     PlayerGoals playerGoals = new PlayerGoals();
 
-    var rule = new ActivePlayerShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
+    var rule = new OpponentShortestPathBlockedEvaluatorRule(boardSearch, playerGoals);
 
     var actual = rule.evaluate(match, QuoridorPlayer.ONE);
     var expected = 0;
@@ -792,5 +789,4 @@ public class ActivePlayerShortestPathBlockedTest {
 
     assertEquals(expected, actual, 0);
   }
-
 }
