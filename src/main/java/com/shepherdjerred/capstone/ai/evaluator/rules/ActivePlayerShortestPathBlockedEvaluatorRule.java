@@ -43,15 +43,18 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
 
     while (canBeBlocked == 0 && endSpaceParentNode != null) {
       Coordinate wallAbove = endSpaceParent.above();
-      Coordinate wallAboveLeft = wallAbove.toLeft(2);
+      Coordinate wallAbove1Left1 = wallAbove.toLeft();
       Coordinate wallAbove1Left2 = wallAbove.toLeft(2);
-
-      Coordinate wallAboveRight = wallAbove.toRight(2);
+      Coordinate wallAbove1Right1 = wallAbove.toRight();
       Coordinate wallAbove1Right2 = wallAbove.toRight(2);
 
       Coordinate wallBelow = endSpaceParent.below();
-      Coordinate wallBelowLeft = wallBelow.toLeft(2);
-      Coordinate wallBelowRight = wallBelow.toRight(2);
+      Coordinate wallBelow1Left1 = wallBelow.toLeft();
+      Coordinate wallBelow1Left2 = wallBelow.toLeft(2);
+      Coordinate wallBelow1Right1 = wallBelow.toRight();
+      Coordinate wallBelow1Right2 = wallBelow.toRight(2);
+
+
       Coordinate wallUpLeft = endSpaceParent.toLeft().above(2);
       Coordinate wallUpRight = endSpaceParent.toRight().above(2);
       Coordinate wallDownLeft = endSpaceParent.toLeft().below(2);
@@ -61,28 +64,90 @@ public class ActivePlayerShortestPathBlockedEvaluatorRule implements EvaluatorRu
       Coordinate wallLeft2 = endSpaceParent.toLeft(3);
       Coordinate wallRight2 = endSpaceParent.toRight(3);
 
-//TODO Fix the rest of these (left, right, below) like above; Watch for Out of Bounds
+//TODO Fix these; Watch for Out of Bounds
       if (endSpaceParent.above(2).equals(endSpace)) {
 
+        //middle check
         if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight)
             && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)) {
-          if ((gameBoard.isCoordinateValid(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right2))
-              || (gameBoard.isCoordinateValid(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left2))) {
+          if ((gameBoard.isEmpty(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right1))
+              || (gameBoard.isEmpty(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left1))) {
             canBeBlocked = 1;
           }
         }
 
+        //left side spaced out check
         if (gameBoard.isCoordinateValid(wallLeft2) && gameBoard.isCoordinateValid(wallRight)
             && gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)) {
-          if (gameBoard.isCoordinateValid(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left2)) {
-            canBeBlocked = 1;
-          }
-        } else if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight2)
-            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)) {
-          if (gameBoard.isCoordinateValid(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right2)) {
+          if (gameBoard.isEmpty(wallAbove1Left2) && gameBoard.isEmpty(wallAbove1Left1)) {
             canBeBlocked = 1;
           }
         }
+
+        //right side spaced out check
+        if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight2)
+            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)) {
+          if (gameBoard.isEmpty(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right1)) {
+            canBeBlocked = 1;
+          }
+        }
+
+        //left border check
+        if (endSpaceParent.getX() == 0
+            && (gameBoard.hasWall(wallRight) || gameBoard.hasWall(wallRight2))
+            && gameBoard.isEmpty(wallAbove1Right1) && gameBoard.isEmpty(wallAbove1Right2)) {
+          canBeBlocked = 1;
+        }
+
+        //left border +1 check with 1 wall
+        if (endSpaceParent.getX() == 2 && gameBoard.hasWall(wallRight)) {
+          if ((gameBoard.isEmpty(wallAbove1Left1) && gameBoard.isEmpty(wallAbove1Left2))) {
+            canBeBlocked = 1;
+          }
+        }
+
+        //right border check
+        if (endSpaceParent.getX() == gameBoard.getGridSize()
+            && (gameBoard.hasWall(wallLeft) || gameBoard.hasWall(wallLeft2))
+            && gameBoard.isEmpty(wallAbove1Left1) && gameBoard.isEmpty(wallAbove1Left2)) {
+          canBeBlocked = 1;
+        }
+
+        //right border -1 check with 1 wall
+        if (endSpaceParent.getX() == gameBoard.getGridSize() - 2 && gameBoard.hasWall(wallLeft)) {
+          if ((gameBoard.isEmpty(wallAbove1Right1) && gameBoard.isEmpty(wallAbove1Right2))) {
+            canBeBlocked = 1;
+          }
+        }
+      } else if (endSpaceParent.below(2).equals(endSpace)) {
+
+        //middle check
+        if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight)
+            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight)) {
+          if ((gameBoard.isEmpty(wallBelow1Right2) && gameBoard.isEmpty(wallBelow1Right1))
+              || (gameBoard.isEmpty(wallBelow1Left2) && gameBoard.isEmpty(wallBelow1Left1))) {
+            canBeBlocked = 1;
+          }
+        }
+
+        //left side spaced out check
+        if (gameBoard.isCoordinateValid(wallLeft2) && gameBoard.isCoordinateValid(wallRight)
+            && gameBoard.hasWall(wallLeft2) && gameBoard.hasWall(wallRight)) {
+          if (gameBoard.isEmpty(wallBelow1Left2) && gameBoard.isEmpty(wallBelow1Left1)) {
+            canBeBlocked = 1;
+          }
+        }
+
+        //right side spaced out check
+        if (gameBoard.isCoordinateValid(wallLeft) && gameBoard.isCoordinateValid(wallRight2)
+            && gameBoard.hasWall(wallLeft) && gameBoard.hasWall(wallRight2)) {
+          if (gameBoard.isEmpty(wallAbove1Right2) && gameBoard.isEmpty(wallAbove1Right1)) {
+            canBeBlocked = 1;
+          }
+        }
+
+
+
       }
 
 
